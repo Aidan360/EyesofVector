@@ -17,7 +17,7 @@ int sgn(double x) {
     }
 }
 double vectorR::motorClass::getPosition() {
-    //position = pros::c::motor_get_raw_position(motorPort);
+    position = pros::c::motor_get_raw_position(motorPort,NULL);
 }
 double vectorR::motorClass::getVelocity() {
     velocity = pros::c::motor_get_actual_velocity(motorPort);
