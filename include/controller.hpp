@@ -29,7 +29,7 @@ class moveController{
     double kD; // PID derivative
     double kS; // FF static friction
     double kV; // FF velocity
-   // double kA; // FF acceleration no god damn clue how I'm doing this
+    double kA; // FF acceleration no god damn clue how I'm doing this EDIT: I will just make a fuction for this 
     moveController(motorClass& m) : motor(m) {} //no clue how to do this 
     double outputPORT;
     double kG = 0; // doesn't matter for any mechanisms we have as of now
@@ -39,7 +39,18 @@ class moveController{
     double averageError = 0;
     double output = 0; // In Voltage
     int moveTo(double input);
-
+};
+class chassisController{
+    public: 
+    double kP; // PID proportional
+    double kI; // PID integral
+    double kD; // PID derivative
+    double kS; // FF static friction
+    double kV; // FF velocity
+    double kA; // FF acceleration no god damn clue how I'm doing this EDIT: I will just make a fuction for this 
+    //moveController left;
+    //moveController right;
+   // void initialize;
 };
 
 }

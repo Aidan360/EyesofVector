@@ -1,5 +1,6 @@
 #include "main.h"
 #include "initialize.hpp"
+#include "controller.hpp"
 void initialize() {
 	// initializers
     pros::lcd::initialize();
@@ -37,4 +38,13 @@ void initialize() {
     encoderL.reset();
     encoderR.reset();
     encoderB.reset();
+
+    // Controller Setup
+    vectorR::chassisController chassis;
+    chassis.kP = 0;
+    chassis.kI = 0;
+    chassis.kD = 0;
+    chassis.kS = 0;
+    chassis.kV = 0;
+    chassis.kA = 0;
 }
