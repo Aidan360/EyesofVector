@@ -109,13 +109,13 @@ class spac {
     std::vector<float> triballDistances;
     std::vector<float> goalDistances;
     std::vector<float> poleDistances;
-    
     void Screen();
     void renderAll();
     void Save();
     void Run();
     void pathFind();
     void input();
+    
 
 };
 

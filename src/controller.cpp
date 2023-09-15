@@ -30,3 +30,12 @@ int vectorR::moveController::moveTo(double input) {
     output = kP*error + kI*integral + kD*derivative + (kS*sgn(error)); 
     return (1);
 }
+void vectorR::moveController::recordAccelerate(){
+    acel.open(name + ".cpp");
+    if (acel){}
+    else 
+    {
+        std::ofstream acel(name + "cpp"); 
+        acel << "#include <string> #include <vector> std::vector<float> poleDistances;";
+    }
+}

@@ -1,6 +1,8 @@
 #include "initialize.hpp"
 #include "main.h"
-
+#include <limits>
+#include <string>
+#include <vector>
 namespace vectorR{
 
 class motorClass {
@@ -13,24 +15,25 @@ class motorClass {
     double getVelocity();
     double getAcceleration();
 };
-/*class sensorClass {
+class sensorClass {
     double value;
-}; */
+}; 
 
 class moveController{
     private:
     double integral;
     double derivative; 
-    motorClass& motor;
-    //sensorClass& sensor;
+    std::ifstream acel; 
     public: 
+    motorClass motor; 
+    sensorClass sensor;    
+    std::string name;
     double kP; // PID proportional
     double kI; // PID integral
     double kD; // PID derivative
     double kS; // FF static friction
     double kV; // FF velocity
     double kA; // FF acceleration no god damn clue how I'm doing this EDIT: I will just make a fuction for this 
-    moveController(motorClass& m) : motor(m) {} //no clue how to do this 
     double outputPORT;
     double kG = 0; // doesn't matter for any mechanisms we have as of now
     double margin = 0; // error of margin 
@@ -38,7 +41,10 @@ class moveController{
     double lastError = 0;
     double averageError = 0;
     double output = 0; // In Voltage
+
     int moveTo(double input);
+    int setVelocity(double input); 
+    void recordAccelerate();
 };
 class chassisController{
     public: 
