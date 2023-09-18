@@ -1,6 +1,7 @@
 #include "main.h"
 #include "initialize.hpp"
 #include "controller.hpp"
+#include "pros/adi.hpp"
 void initialize() {
 	// initializers
     pros::lcd::initialize();
@@ -10,13 +11,14 @@ void initialize() {
     pros::Motor leftBackMotor_initializer (leftBackMotor_PORT, pros::E_MOTOR_GEARSET_06, false, pros::E_MOTOR_ENCODER_DEGREES);
     pros::Motor rightFrontMotor_initializer (rightFrontMotor_PORT, pros::E_MOTOR_GEARSET_06, true, pros::E_MOTOR_ENCODER_DEGREES);
     pros::Motor rightBackMotor_initializer (rightBackMotor_PORT, pros::E_MOTOR_GEARSET_06, true, pros::E_MOTOR_ENCODER_DEGREES);
-    pros::Motor slingShot_initializer (slingShotMotor_PORT, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_DEGREES);
+    pros::Motor catapult_initializer (catapultMotor_PORT, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_DEGREES);
     pros::Motor intake_initializer (intakeMotor_PORT, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_DEGREES);
     pros::ADIEncoder encoderL_initializer (encoderLeftTop_PORT,encoderLeftBottom_PORT, false);
     pros::ADIEncoder encoderR_initializer (encoderRightTop_PORT,encoderRightBottom_PORT, false);
     pros::ADIEncoder encoderB_initializer (encoderBackTop_PORT,encoderBackBottom_PORT, false);
     pros::ADIDigitalOut climbingPTO_initializer (climbingPTO_PORT);
-    pros::ADIDigitalOut intakePTO_initializer (intakePTO_PORT);
+    pros::ADIDigitalOut flapLeft_initializer ({{expander_PORT,EXT_flapLeft_PORT}});
+    pros::ADIDigitalOut flapRight_initializer ({{expander_PORT,EXT_flapRight_PORT}});
     
     
     
@@ -30,9 +32,11 @@ void initialize() {
     pros::Motor rightFrontMotor (rightFrontMotor_PORT);
     pros::Motor rightMiddleMotor (rightMiddleMotor_PORT);
     pros::Motor rightBackMotor (rightBackMotor_PORT);
-    pros::Motor slingShotMotor (slingShotMotor_PORT);
+    pros::Motor catapultMotor (catapultMotor_PORT);
+    pros::Motor intakeMotor(intakeMotor_PORT);
     pros::ADIDigitalOut climbingPTO (climbingPTO_PORT);
-    pros::ADIDigitalOut intakePTO (intakePTO_PORT);
+    pros::ADIDigitalOut flapLeft ({{expander_PORT,EXT_flapLeft_PORT}});
+    pros::ADIDigitalOut flapRight ({{expander_PORT,EXT_flapRight_PORT}});
 
     
     encoderL.reset();

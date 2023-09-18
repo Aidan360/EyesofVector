@@ -43,7 +43,7 @@
 
 #include <fstream>
 #include "api.h"
-
+#include <string>
 /**
  * You should add more #includes here
  */

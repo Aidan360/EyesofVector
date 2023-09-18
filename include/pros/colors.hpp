@@ -164,6 +164,7 @@ enum class Color {
   white_smoke = 0x00F5F5F5,
   yellow = 0x00FFFF00,
   yellow_green = 0x009ACD32,
+  vector_green = 0x0039e330, 
 };
 } // namespace pros
 

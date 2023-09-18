@@ -2,7 +2,6 @@
 #include "main.h"
 #include "controller.hpp"
 #include <limits>
-#include <string>
 #include <vector>
 namespace vectorR {
 /* 
@@ -11,7 +10,7 @@ namespace vectorR {
 4 starting points, 6 center line points, 
 First half of colored things are red, second half of colored things are blue. 
 */
-extern float CompetitionFieldObjectArray[];
+extern float CompetitionFieldObjectArray[4][52];
 /*
 12 Field triballs points, 4 climbing points, 2 center barrier points, 
 4 side barrier points, 8 net points, 
