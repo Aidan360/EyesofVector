@@ -38,6 +38,8 @@ class keyBoard {
 class autonmousInput { // show field for touch screen usage, and stat inputs on the left
     public: 
     void start();
+    void render(); 
+    void detect();
     void kill();
     int inSpeed; // whenever inputting round down
     int inSize; // whenever inputting round up 
@@ -45,20 +47,32 @@ class autonmousInput { // show field for touch screen usage, and stat inputs on 
     int partnerStart; // 1-4 correlated to the set starting positions 
     int selfStart; // our starting position
     bool color; // red is false blue is true 
+    private:
+    int borderOffset = 12; // creating the Green Offset Border
 };
 class preview { 
     public:
     void start();
     void kill();
     std::string autonomousName;
+    private: 
+    int borderOffset = 12; // creating the Green Offset Border
 };
 
 class startScreen {
     public: 
     void start();
+    void render(); 
+    void detect();
     void kill();
     std::string autonomousName; 
-
+    private:
+    int borderOffset = 12; // creating the Green Offset Border
+    int screenX = screenMaxX - borderOffset;
+    int screenY = screenMaxY - borderOffset;
+    int leftColProp = 3; // proportions of screen
+    int rightColProp = 7; // proportions of screen
+    int rowProp = 5; // proportions of screen
 };
 
 

@@ -8,11 +8,13 @@ void vectorR::keyBoard::render() {
     squareLength = screenX/10; 
     spaces = (screenX - letterCount*squareLength)/2; 
     for (int i = 0; i < letterCount; ++i) { // gets the first row, spaces is the blank space, s
+         pros::screen::set_pen(COLOR_DEEP_SKY_BLUE);
         pros::screen::draw_rect(borderOffset + spaces + squareLength * i, borderOffset, borderOffset + spaces + squareLength*(i+1), borderOffset + squareHeight);
         if(size(input) >= i) {
             pros::screen::print(pros::E_TEXT_SMALL,(borderOffset + spaces + (squareLength*i) + squareLength/2), (squareHeight/2), "d%", input[i]);
         }
     }
+     pros::screen::set_pen(COLOR_WHITE);
     for (int i = 1; i < std::size(rows); ++i) { // gets keyboard rows i is for all y calc, j is for all x calc. should print individual letters. 
         for (int j = 0; j < std::size(rowContent[i]); ++j) {
             pros::screen::draw_rect(borderOffset + squareLength * j, borderOffset + squareHeight*i, borderOffset + squareLength*(j+1), borderOffset + squareHeight*(i+1));

@@ -21,7 +21,7 @@
 #define encoderBackTop_PORT 5
 #define encoderBackBottom_PORT 6
 #define climbingPTO_PORT 7
-//#define intakePTO_PORT 8 
+
  // 3 wire extender
  #define EXT_flapLeft_PORT 'a'
  #define EXT_flapRight_PORT 'b'
