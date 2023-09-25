@@ -1,5 +1,6 @@
 #include "main.h"
 #include "initialize.hpp"
+#include "bac.hpp" 
 #include "pros/adi.hpp"
 #include "pros/misc.h"
     pros::Motor leftFrontMotor (leftFrontMotor_PORT);
@@ -16,8 +17,6 @@
 void disabled() {}
 
 void competition_initialize() {}
-
-void autonomous() {}
 
   float left;
   float right;

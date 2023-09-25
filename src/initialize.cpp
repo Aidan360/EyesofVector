@@ -1,11 +1,10 @@
 #include "main.h"
 #include "initialize.hpp"
-#include "controller.hpp"
 #include "pros/adi.hpp"
+#include "bac.hpp" 
 void initialize() {
 	// initializers
     pros::lcd::initialize();
-	pros::lcd::set_text(1, "Hello PROS User!");
     pros::Motor leftFrontMotor_initializer (leftFrontMotor_PORT, pros::E_MOTOR_GEARSET_06, false, pros::E_MOTOR_ENCODER_DEGREES);
     pros::Motor leftMiddleMotor_initializer (leftMiddleMotor_PORT, pros::E_MOTOR_GEARSET_06, false, pros::E_MOTOR_ENCODER_DEGREES);  
     pros::Motor leftBackMotor_initializer (leftBackMotor_PORT, pros::E_MOTOR_GEARSET_06, false, pros::E_MOTOR_ENCODER_DEGREES);
@@ -37,7 +36,6 @@ void initialize() {
     pros::ADIDigitalOut climbingPTO (climbingPTO_PORT);
     pros::ADIDigitalOut flapLeft ({{expander_PORT,EXT_flapLeft_PORT}});
     pros::ADIDigitalOut flapRight ({{expander_PORT,EXT_flapRight_PORT}});
-
     
     encoderL.reset();
     encoderR.reset();
@@ -51,4 +49,14 @@ void initialize() {
     chassis.kS = 0;
     chassis.kV = 0;
     chassis.kA = 0;
+    // Basic chassis initialization, No PID uses BAC coding
+    driveTrain.motorPortLeft.push_back(leftFrontMotor_PORT);
+    driveTrain.motorPortLeft.push_back(leftMiddleMotor_PORT);
+    driveTrain.motorPortLeft.push_back(leftBackMotor_PORT);
+    driveTrain.motorPortRight.push_back(rightFrontMotor_PORT);
+    driveTrain.motorPortRight.push_back(rightMiddleMotor_PORT);
+    driveTrain.motorPortRight.push_back(rightBackMotor_PORT);
+    driveTrain.rpm = 360; 
+    driveTrain.wheelSize = 3.25;
+    driveTrain.trackLength = 13; // change when you actually get the robot
 }

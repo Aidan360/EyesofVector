@@ -1,4 +1,3 @@
-#include "initialize.hpp"
 #include "main.h"
 #include <limits>
 #include <string>
@@ -25,7 +24,7 @@ class moveController{
     double derivative; 
     std::ifstream acel; 
     public: 
-    motorClass motor; 
+   // motorClass motor; 
     sensorClass sensor;    
     std::string name;
     double kP; // PID proportional
