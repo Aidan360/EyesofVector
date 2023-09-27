@@ -17,6 +17,16 @@ namespace vectorR{
         private: 
         double velVol = rpm/127;
     };
+    class BACGenerator { 
+        public:
+        std::vector<double> inputs; 
+        std::vector<double> outPuts; 
+        
+
+        void translation(); 
+        void 
+        
+    };
 };
 extern vectorR::BasicChassis driveTrain; 
 

@@ -6,6 +6,6 @@
 
 
 void autonomous() {
-    driveTrain.goForward(48, 127);
-    driveTrain.turn(720,127);
+    driveTrain.goForward(48,360);
+    driveTrain.turn(720,360);
 }
