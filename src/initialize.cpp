@@ -7,9 +7,10 @@ void initialize() {
     pros::lcd::initialize();
     pros::Motor leftFrontMotor_initializer (leftFrontMotor_PORT, pros::E_MOTOR_GEARSET_06, false, pros::E_MOTOR_ENCODER_DEGREES);
     pros::Motor leftMiddleMotor_initializer (leftMiddleMotor_PORT, pros::E_MOTOR_GEARSET_06, false, pros::E_MOTOR_ENCODER_DEGREES);  
-    pros::Motor leftBackMotor_initializer (leftBackMotor_PORT, pros::E_MOTOR_GEARSET_06, false, pros::E_MOTOR_ENCODER_DEGREES);
+    pros::Motor leftBackMotor_initializer (leftBackMotor_PORT, pros::E_MOTOR_GEARSET_06, true, pros::E_MOTOR_ENCODER_DEGREES);
     pros::Motor rightFrontMotor_initializer (rightFrontMotor_PORT, pros::E_MOTOR_GEARSET_06, true, pros::E_MOTOR_ENCODER_DEGREES);
-    pros::Motor rightBackMotor_initializer (rightBackMotor_PORT, pros::E_MOTOR_GEARSET_06, true, pros::E_MOTOR_ENCODER_DEGREES);
+    pros::Motor rightMiddleMotor_initializer (rightMiddleMotor_PORT, pros::E_MOTOR_GEARSET_06, true, pros::E_MOTOR_ENCODER_DEGREES); 
+    pros::Motor rightBackMotor_initializer (rightBackMotor_PORT, pros::E_MOTOR_GEARSET_06, false, pros::E_MOTOR_ENCODER_DEGREES);
     pros::Motor catapult_initializer (catapultMotor_PORT, pros::E_MOTOR_GEARSET_36, false, pros::E_MOTOR_ENCODER_DEGREES);
     pros::Motor intake_initializer (intakeMotor_PORT, pros::E_MOTOR_GEARSET_06, false, pros::E_MOTOR_ENCODER_DEGREES);
     pros::ADIEncoder encoderL_initializer (encoderLeftTop_PORT,encoderLeftBottom_PORT, false);
@@ -42,14 +43,15 @@ void initialize() {
     encoderB.reset();
 
     // Controller Setup
-    vectorR::chassisController chassis;
+ /* vectorR::chassisController chassis;
     chassis.kP = 0;
     chassis.kI = 0;
     chassis.kD = 0;
     chassis.kS = 0;
     chassis.kV = 0;
-    chassis.kA = 0;
+    chassis.kA = 0;  */
     // Basic chassis initialization, No PID uses BAC coding
+    vectorR::BasicChassis driveTrain;
     driveTrain.motorPortLeft.push_back(leftFrontMotor_PORT);
     driveTrain.motorPortLeft.push_back(leftMiddleMotor_PORT);
     driveTrain.motorPortLeft.push_back(leftBackMotor_PORT);
@@ -58,5 +60,5 @@ void initialize() {
     driveTrain.motorPortRight.push_back(rightBackMotor_PORT);
     driveTrain.rpm = 360; 
     driveTrain.wheelSize = 3.25;
-    driveTrain.trackLength = 13; // change when you actually get the robot
+    driveTrain.trackLength = 13; // change when you actually get the robot */
 }

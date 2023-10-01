@@ -1,5 +1,5 @@
 #include "screen.hpp" 
-
+/*
 void vectorR::startScreen::render() {
     createOffset(borderOffset);
     pros::screen::set_pen(COLOR_WHITE);
@@ -7,5 +7,5 @@ void vectorR::startScreen::render() {
     pros::screen::set_pen(COLOR_CORAL);
     pros::E_TEXT_SMALL,(borderOffset + 1.5*screenX/5 , (borderOffset + 1.5*screenY/7, "SPAC"));
     
-    pros:: 
-}
+    
+} */

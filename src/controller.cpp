@@ -4,6 +4,7 @@
 #include "controller.hpp"
 #include "pros/motors.h"
 #include <ctime>
+#include "math.h"
 // ALEXIS THIS IS NOT FOR THE ACTUAL CONTROLLER, THIS IS FOR THE PID FEED FORWARD CONTROLLER
 int sgn(double x) {
     if (x > 0) {

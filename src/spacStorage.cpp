@@ -1,7 +1,7 @@
  // try understanding this Alexis, I can't understand it either 
 #include "spac.hpp"
 
-using namespace vectorR;
+//using namespace vectorR;
 // 0 = object tag, Triball is 1, Climbing points is 2, 3 is center barrier, 4 is for side barriers, 5 for nets, 6 for loading zones, 7 for starting points, 8 for center line points 
 // 1 = x 
 // 2 = y
@@ -11,7 +11,7 @@ using namespace vectorR;
 4 starting points, 6 center line points, 
 First half of colored things are red, second half of colored things are blue. 
 */
-
+/*
 float CompetitionFieldObjectArray[4][52] =  {
     {0,1,2,3,4,5,6,7,8,9,10,11,
     12,13,14,15,
@@ -45,4 +45,4 @@ float CompetitionFieldObjectArray[4][52] =  {
     6,6,6,6,6,6,6,6,6,6,6,6,
     7,7,7,7,
     8,8,8,8,8,8}
-};
+}; */

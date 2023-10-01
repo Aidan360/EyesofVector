@@ -1,7 +1,7 @@
 #include "main.h"
 #include "spac.hpp"
 #include <string>
-#include <vector>
+#include <vector> 
 namespace vectorR{
 
     class BasicChassis { 
@@ -16,17 +16,17 @@ namespace vectorR{
         void turn(double degrees, double velocity);
         private: 
         double velVol = rpm/127;
-    };
-    class BACGenerator { 
+    }; 
+ /*   class BACGenerator { 
         public:
         std::vector<double> inputs; 
         std::vector<double> outPuts; 
         
 
         void translation(); 
-        void 
-        
-    };
-};
+        //void 
+         
+    }; */
+}; 
 extern vectorR::BasicChassis driveTrain; 
 
