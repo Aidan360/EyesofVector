@@ -8,7 +8,7 @@ namespace vectorR{
         public:
         std::vector<int> motorPortLeft;
         std::vector<int> motorPortRight;
-        float rpm; 
+        float rpm = 360; 
         float wheelSize;
         double velocity;
         float trackLength;
@@ -17,16 +17,16 @@ namespace vectorR{
         private: 
         double velVol = rpm/127;
     }; 
- /*   class BACGenerator { 
+    class BACGenerator { 
         public:
-        std::vector<double> inputs; 
+        std::vector<double> inputs; // Inputs from the Screen Keyboard Function  
         std::vector<double> outPuts; 
         
 
         void translation(); 
         //void 
          
-    }; */
+    }; 
 }; 
 extern vectorR::BasicChassis driveTrain; 
 
