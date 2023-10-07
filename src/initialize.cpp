@@ -11,7 +11,7 @@ void initialize() {
     pros::Motor rightFrontMotor_initializer (rightFrontMotor_PORT, pros::E_MOTOR_GEARSET_06, true, pros::E_MOTOR_ENCODER_DEGREES);
     pros::Motor rightMiddleMotor_initializer (rightMiddleMotor_PORT, pros::E_MOTOR_GEARSET_06, true, pros::E_MOTOR_ENCODER_DEGREES); 
     pros::Motor rightBackMotor_initializer (rightBackMotor_PORT, pros::E_MOTOR_GEARSET_06, false, pros::E_MOTOR_ENCODER_DEGREES);
-    pros::Motor catapult_initializer (catapultMotor_PORT, pros::E_MOTOR_GEARSET_36, false, pros::E_MOTOR_ENCODER_DEGREES);
+    pros::Motor catapult_initializer (catapultMotor_PORT, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_DEGREES);
     pros::Motor intake_initializer (intakeMotor_PORT, pros::E_MOTOR_GEARSET_06, false, pros::E_MOTOR_ENCODER_DEGREES);
     pros::ADIEncoder encoderL_initializer (encoderLeftTop_PORT,encoderLeftBottom_PORT, false);
     pros::ADIEncoder encoderR_initializer (encoderRightTop_PORT,encoderRightBottom_PORT, false);
@@ -19,7 +19,7 @@ void initialize() {
     pros::ADIDigitalOut climbingPTO_initializer (climbingPTO_PORT);
     pros::ADIDigitalOut flapLeft_initializer ({{expander_PORT,EXT_flapLeft_PORT}});
     pros::ADIDigitalOut flapRight_initializer ({{expander_PORT,EXT_flapRight_PORT}});
-     
+    pros::ADIDigitalIn cataLimit_initializer ({{expander_PORT,EXT_cataLimit_PORT}});
     
     
     // declarations
@@ -37,7 +37,8 @@ void initialize() {
     pros::ADIDigitalOut climbingPTO (climbingPTO_PORT);
     pros::ADIDigitalOut flapLeft ({{expander_PORT,EXT_flapLeft_PORT}});
     pros::ADIDigitalOut flapRight ({{expander_PORT,EXT_flapRight_PORT}});
-    
+    pros::ADIDigitalIn cataLimit ({{expander_PORT,EXT_cataLimit_PORT}});
+
     encoderL.reset();
     encoderR.reset();
     encoderB.reset();
@@ -51,14 +52,5 @@ void initialize() {
     chassis.kV = 0;
     chassis.kA = 0;  */
     // Basic chassis initialization, No PID uses BAC coding
-    vectorR::BasicChassis driveTrain;
-    driveTrain.motorPortLeft.push_back(leftFrontMotor_PORT);
-    driveTrain.motorPortLeft.push_back(leftMiddleMotor_PORT);
-    driveTrain.motorPortLeft.push_back(leftBackMotor_PORT);
-    driveTrain.motorPortRight.push_back(rightFrontMotor_PORT);
-    driveTrain.motorPortRight.push_back(rightMiddleMotor_PORT);
-    driveTrain.motorPortRight.push_back(rightBackMotor_PORT);
-    driveTrain.rpm = 360; 
-    driveTrain.wheelSize = 3.25;
-    driveTrain.trackLength = 13; // change when you actually get the robot */
+
 }

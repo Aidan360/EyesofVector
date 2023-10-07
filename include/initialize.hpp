@@ -9,7 +9,7 @@
 #define rightBackMotor_PORT 6 // Speed
 #define intakeMotor_PORT 7 // Speed
 #define catapultMotor_PORT 8 // Torque?? 
-#define expander_PORT 9 // extender for other sensors
+#define expander_PORT 11 // extender for other sensors
 #define vision_PORT 10 // vision sensor, may add another.
 
 
@@ -25,6 +25,7 @@
  // 3 wire extender
  #define EXT_flapLeft_PORT 'a'
  #define EXT_flapRight_PORT 'b'
+ #define EXT_cataLimit_PORT 'c'
 
 
 extern float ChassisPIDValues[6];

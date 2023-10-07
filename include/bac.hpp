@@ -2,7 +2,7 @@
 #include "spac.hpp"
 #include <string>
 #include <vector> 
-namespace vectorR{
+
 
     class BasicChassis { 
         public:
@@ -27,6 +27,6 @@ namespace vectorR{
         //void 
          
     }; 
-}; 
-extern vectorR::BasicChassis driveTrain; 
+
+extern BasicChassis driveTrain; 
 

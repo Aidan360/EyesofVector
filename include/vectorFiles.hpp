@@ -1,7 +1,7 @@
 #include "spac.hpp"
-#include "fstream"
-#include "vector"
-#include "string"
+#include <iostream>
+#include <fstream>
+#include <vector>
 #include <string>
 
 // Vector filesystem, will manage log creation mostly managing SPACs and Bacs and soon AIACs. 
@@ -27,12 +27,6 @@ runList.txt
 bL11111AV1FF200FF15FF18FF3FF19FF15FF32.txt
 log11111AV1.txt
 */
-
-
-
-
-
-
 
 
 void saveToRunList(std::string fileName, std::vector<int> runData); // saves succesful run to quickrun list 

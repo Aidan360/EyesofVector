@@ -14,6 +14,7 @@
     pros::ADIDigitalOut climbingPTO (climbingPTO_PORT);
     pros::ADIDigitalOut flapLeft ({{expander_PORT,EXT_flapLeft_PORT}});
     pros::ADIDigitalOut flapRight ({{expander_PORT,EXT_flapRight_PORT}});
+	pros::ADIDigitalIn cataLimit ({{expander_PORT,EXT_cataLimit_PORT}});
 void disabled() {}
 
 void competition_initialize() {}
@@ -37,14 +38,41 @@ void opcontrol() {
 				flapRight.set_value(false);
 			}
     	}
+		
+		
+		if (cataLimit.get_value() == 0) { 
+			catapultMotor.move(-127); 
+		}
+		else if (master.get_digital(DIGITAL_R1)) {
+			catapultMotor.move(-127);
+		}  
+		else if (cataLimit.get_value() == 1) { 
+			catapultMotor.move(0);
+			catapultMotor.set_brake_mode(MOTOR_BRAKE_BRAKE);
+			catapultMotor.brake();
+		}
+
+		
+		/*
 		if (master.get_digital(DIGITAL_R1)) {
-			catapultMotor.move(127);
+			catapultMotor.move(-50);
 		} // should work ???
+		else if (master.get_digital(DIGITAL_R2)) {
+			catapultMotor.move(50);
+		} // should work ???
+		else {
+			catapultMotor.move(0);
+			catapultMotor.set_brake_mode(MOTOR_BRAKE_HOLD);
+		}
+		*/
 		if (master.get_digital(DIGITAL_L1)) {
 			intakeMotor.move(127);
 		}
-		if (master.get_digital(DIGITAL_L2)) {
+		else if (master.get_digital(DIGITAL_L2)) {
 			intakeMotor.move(-127);
+		}
+		else {
+			intakeMotor.move(0);
 		}
 		if (master.get_digital(DIGITAL_B)){
       		if (climbPTO == false) {
@@ -57,12 +85,12 @@ void opcontrol() {
 		turn = master.get_analog(ANALOG_RIGHT_X);
 		left = power + turn;
 		right = power - turn;
-		leftFrontMotor.move(left); // Conners Move
-		leftMiddleMotor.move(left);
-		leftBackMotor.move(left);
-		rightFrontMotor.move(right);
-		rightMiddleMotor.move(right);
-		rightBackMotor.move(right);
-		pros::delay(250);
+		leftFrontMotor.move(-1*left); // Conners Move
+		leftMiddleMotor.move(-1*left);
+		leftBackMotor.move(-1*left);
+		rightFrontMotor.move(-1*right);
+		rightMiddleMotor.move(-1*right);
+		rightBackMotor.move(-1*right);
+		pros::delay(10);
 	}
 }

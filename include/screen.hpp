@@ -2,7 +2,8 @@
 #include <array>
 // Screen Ratio 30:17 
 extern int screenMaxX;
-extern int screenMaxY; 
+extern int screenMaxY;
+
 namespace vectorR{
 
 

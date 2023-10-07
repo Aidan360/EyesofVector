@@ -1,5 +1,5 @@
 #include "screen.hpp"
-/*
+
 void vectorR::keyBoard::start() {
     killNum = 0;
 }
@@ -47,4 +47,3 @@ void vectorR::keyBoard::detect() {
 void vectorR::keyBoard::kill() {
     killNum = 1;
 }
-*/
