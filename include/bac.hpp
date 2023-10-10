@@ -15,7 +15,7 @@
         void goForward(double distance, double velocity);
         void turn(double degrees, double velocity);
         private: 
-        double velVol = rpm/127;
+        double velVol = 600/rpm;
     }; 
     class BACGenerator { 
         public:
