@@ -1,7 +1,11 @@
 #include "bac.hpp" 
 #include "main.h"
+#include "pros/adi.h"
+#include "pros/llemu.h"
+#include "pros/motors.h"
 #include "pros/motors.hpp"
 #include "math.h"
+#include "initialize.hpp"
 double abso(double x) {
     if (0 > x) {
         return(x * -1);
@@ -9,9 +13,26 @@ double abso(double x) {
     else {
         return(x);
     }
+} 
+void BasicChassis::goForward(double inch) {
+    double error;
+    double lastError;
+    pros::c::adi_encoder_t enc = pros::c::adi_encoder_init(encoderTop_PORT,encoderBottom_PORT,false);
+    while (abs(error) > 0) { 
+    error = inch - pros::c::adi_encoder_get(enc);  
+    integral = integral + error; 
+    derivative = error - lastError;
+    double output = tkP*error + tkI*integral + tkD*derivative; 
+    for (int i = 0; i < std::size(motorPortLeft); ++i) {
+        pros::c::motor_move_voltage(-motorPortLeft[i],output);
+        pros::c::motor_move_voltage(-motorPortRight[i],output);
+    }
+    lastError = error; 
+    pros::delay(10);
+    }  
+
 }
- 
-void BasicChassis::goForward(double distance, double velocity) { // Horizontal 
+void BasicChassis::goForwardM(double distance, double velocity) { // Horizontal 
     double rotationDegrees = ((distance/wheelSize * 360)/2) * -0.90;
     double lastDegrees = ((distance/wheelSize * 360)/2)* 0.05;
     
@@ -66,7 +87,29 @@ void BasicChassis::goForward(double distance, double velocity) { // Horizontal
         pros::c::motor_move_relative(motorPortLeft[i],rotationDegrees,velocity*velVol);
         pros::c::motor_move_relative(motorPortRight[i],rotationDegrees,velocity*velVol);
     } */
-void BasicChassis::turn(double degrees, double velocity) {
+void BasicChassis::turn(double degree) {
+    double error = degree - pros::c::imu_get_heading(12);
+    double lastError = 0;
+    double output;
+    integral = 0;
+    while ((abso(error) > 0.5)) { 
+    error = degree - pros::c::imu_get_heading(12);  
+    pros::lcd::print(0, "Balls %f", pros::c::imu_get_heading(12));
+    integral = integral + error; 
+    derivative = error - lastError;
+    output = tkP*error + tkI*integral + tkD*derivative; 
+    for (int i = 0; i < std::size(motorPortLeft); ++i) {
+        pros::c::motor_move_voltage(motorPortLeft[i],-output);
+        pros::c::motor_move_voltage(motorPortRight[i],output);
+    }
+    lastError = error; 
+    pros::delay(10);
+    }  
+
+    pros::lcd::print(1, "done %f", pros::c::imu_get_heading(12)); 
+
+}
+void BasicChassis::turnM(double degrees, double velocity) {
     double distance = (degrees * M_PI/180) * (trackLength/2);
     double rotationDegrees = (distance/wheelSize * 360)/2 * 0.95;  
     double lastDegrees = (distance/wheelSize * 360)/2 * 0.05; 

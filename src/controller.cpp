@@ -2,6 +2,7 @@
 #include "main.h"
 #include "initialize.hpp"
 #include "controller.hpp"
+#include "pros/imu.h"
 #include "pros/motors.h"
 #include <ctime>
 #include "math.h"
@@ -41,3 +42,17 @@ void vectorR::moveController::recordAccelerate(){
         acel << "#include <string> #include <vector> std::vector<float> poleDistances;";
     }
 }
+
+
+int ControllerThread() {
+
+    while (true) {
+        
+        
+        
+        
+        
+        
+        pros::delay(10);
+    }
+};

@@ -16,11 +16,12 @@ void initialize() {
     pros::ADIEncoder encoderL_initializer (encoderLeftTop_PORT,encoderLeftBottom_PORT, false);
     pros::ADIEncoder encoderR_initializer (encoderRightTop_PORT,encoderRightBottom_PORT, false);
     pros::ADIEncoder encoderB_initializer (encoderBackTop_PORT,encoderBackBottom_PORT, false);
-    pros::ADIDigitalOut climbingPTO_initializer (climbingPTO_PORT);
+ //   pros::ADIDigitalOut climbingPTO_initializer (climbingPTO_PORT);
     pros::ADIDigitalOut flapLeft_initializer ({{expander_PORT,EXT_flapLeft_PORT}});
     pros::ADIDigitalOut flapRight_initializer ({{expander_PORT,EXT_flapRight_PORT}});
     pros::ADIDigitalIn cataLimit_initializer ({{expander_PORT,EXT_cataLimit_PORT}});
-    
+    pros::Imu intertia_initializer (IMU_PORT);
+
     
     // declarations
     pros::ADIEncoder encoderL (encoderLeftTop_PORT,encoderLeftBottom_PORT);
@@ -34,16 +35,18 @@ void initialize() {
     pros::Motor rightBackMotor (rightBackMotor_PORT);
     pros::Motor catapultMotor (catapultMotor_PORT);
     pros::Motor intakeMotor(intakeMotor_PORT);
-    pros::ADIDigitalOut climbingPTO (climbingPTO_PORT);
+   // pros::ADIDigitalOut climbingPTO (climbingPTO_PORT);
     pros::ADIDigitalOut flapLeft ({{expander_PORT,EXT_flapLeft_PORT}});
     pros::ADIDigitalOut flapRight ({{expander_PORT,EXT_flapRight_PORT}});
     pros::ADIDigitalIn cataLimit ({{expander_PORT,EXT_cataLimit_PORT}});
+    pros::IMU inertia (IMU_PORT);
+    inertia.reset();
 
     encoderL.reset();
     encoderR.reset();
     encoderB.reset();
 
-    // Controller Setup
+    // Controller Setups
  /* vectorR::chassisController chassis;
     chassis.kP = 0;
     chassis.kI = 0;

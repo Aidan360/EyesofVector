@@ -11,7 +11,7 @@
     pros::Motor rightBackMotor (rightBackMotor_PORT);
     pros::Motor catapultMotor (catapultMotor_PORT);
 	pros::Motor intakeMotor(intakeMotor_PORT);
-    pros::ADIDigitalOut climbingPTO (climbingPTO_PORT);
+ //   pros::ADIDigitalOut climbingPTO (climbingPTO_PORT);
     pros::ADIDigitalOut flapLeft ({{expander_PORT,EXT_flapLeft_PORT}});
     pros::ADIDigitalOut flapRight ({{expander_PORT,EXT_flapRight_PORT}});
 	pros::ADIDigitalIn cataLimit ({{expander_PORT,EXT_cataLimit_PORT}});
@@ -74,13 +74,13 @@ void opcontrol() {
 		else {
 			intakeMotor.move(0);
 		}
-		if (master.get_digital(DIGITAL_B)){
+		/*if (master.get_digital(DIGITAL_B)){
       		if (climbPTO == false) {
 				climbingPTO.set_value(true);
 			} else {
 				climbingPTO.set_value(false);
 			}
-		}
+		} */
 		power = master.get_analog(ANALOG_LEFT_Y);
 		turn = master.get_analog(ANALOG_RIGHT_X);
 		left = power + turn;

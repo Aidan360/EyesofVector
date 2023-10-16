@@ -58,4 +58,20 @@ class chassisController{
    // void initialize;
 };
 
+class turnController {
+    public: 
+    double kP;
+    double kI;
+    std::vector<int> motorPortLeft;
+    std::vector<int> motorPortRight;
+    char IMUPort; 
+    double kD;
+    private: 
+    double error;
+    double integral; 
+    double derivative; 
+    void turn(double degree);
+    
+};
 }
+
