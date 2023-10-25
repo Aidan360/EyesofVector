@@ -36,16 +36,21 @@ void initialize() {
     pros::Motor catapultMotor (catapultMotor_PORT);
     pros::Motor intakeMotor(intakeMotor_PORT);
    // pros::ADIDigitalOut climbingPTO (climbingPTO_PORT);
-    pros::ADIDigitalOut flapLeft ({{expander_PORT,EXT_flapLeft_PORT}});
+    pros::ADIDigitalOut flapLeft (EXT_flapLeft_PORT);
     pros::ADIDigitalOut flapRight ({{expander_PORT,EXT_flapRight_PORT}});
     pros::ADIDigitalIn cataLimit ({{expander_PORT,EXT_cataLimit_PORT}});
     pros::IMU inertia (IMU_PORT);
-    inertia.reset();
+    
+    
+    pros::c::imu_reset_blocking(IMU_PORT);
+    pros::c::imu_set_heading(IMU_PORT,5);
+    pros::c::imu_set_rotation(IMU_PORT, 5);
+    
 
-    encoderL.reset();
-    encoderR.reset();
-    encoderB.reset();
-
+  //  encoderL.reset();
+  //  encoderR.reset();
+  //  encoderB.reset();
+	 pros::lcd::print(4,"count");
     // Controller Setups
  /* vectorR::chassisController chassis;
     chassis.kP = 0;

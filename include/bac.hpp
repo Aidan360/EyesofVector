@@ -13,9 +13,11 @@
         double velocity;
         float trackLength;
         public: 
+        double tkS;
         double tkP;
         double tkI;
         double tkD;
+        double fkS;
         double fkP;
         double fkI;
         double fkD;
