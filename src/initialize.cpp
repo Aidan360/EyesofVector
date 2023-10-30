@@ -2,6 +2,8 @@
 #include "initialize.hpp"
 #include "pros/adi.hpp"
 #include "bac.hpp" 
+#include "launcher.hpp"
+
 void initialize() {
 	// initializers
     pros::lcd::initialize();
@@ -45,7 +47,12 @@ void initialize() {
     pros::c::imu_reset_blocking(IMU_PORT);
     pros::c::imu_set_heading(IMU_PORT,5);
     pros::c::imu_set_rotation(IMU_PORT, 5);
-    
+  
+  
+   //catapult Catapult; 
+   //pros::Task task1(Catapult.catapultThread());
+
+
 
   //  encoderL.reset();
   //  encoderR.reset();

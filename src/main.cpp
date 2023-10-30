@@ -2,7 +2,9 @@
 #include "initialize.hpp"
 #include "bac.hpp" 
 #include "pros/adi.hpp"
+#include "pros/imu.h"
 #include "pros/misc.h"
+#include "pros/motors.h"
 #include "pros/rtos.hpp"
     pros::Motor leftFrontMotor (leftFrontMotor_PORT);
     pros::Motor leftMiddleMotor (leftMiddleMotor_PORT);
@@ -25,29 +27,58 @@ void competition_initialize() {}
   float right;
   float power;
   float turn;
-  bool flapExtend = false;
+  bool flapExtendR = false;
+  bool flapExtendL = false;
   bool climbPTO = false;
-  bool indexerd = false; 
+  bool indexerd = false;
+  int mode = 2; 
+  bool reciever = false;  
+
+  
 void opcontrol() {
 	pros::Controller master(pros::E_CONTROLLER_MASTER);
 	 pros::lcd::print(2,"count");
-	
+
 	while (true) {
-	
-		if (master.get_digital(DIGITAL_R2)) {
-      		if (flapExtend == false) {
-				flapLeft.set_value(false);
+//	  pros::lcd::print(0, "Head %f", pros::c::imu_get_heading(12));
+		if (master.get_digital(DIGITAL_RIGHT)) {
+      		if (flapExtendL == false) {
+				flapLeft.set_value(true);
 				flapRight.set_value(true);	
-				flapExtend = true;
+				flapExtendL = true;
+				flapExtendR = true;
 				pros::delay(250);
 			} else {
-				flapLeft.set_value(true);
+				flapLeft.set_value(false);
 				flapRight.set_value(false);
-				flapExtend = false;
+				flapExtendL = false;
+				flapExtendR = false;
 				pros::delay(250);
 			}
     	}
-		if (master.get_digital(DIGITAL_B)) {
+		if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
+      		if (flapExtendL == false) {
+				flapLeft.set_value(true);
+				flapExtendL = true;
+				pros::delay(250);
+			} else {
+				flapLeft.set_value(false);
+				flapExtendL = false;
+				pros::delay(250);
+			}
+    	}
+		if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
+      		if (flapExtendL == false) {
+				flapRight.set_value(true);
+				flapExtendR = true;
+				pros::delay(250);
+			} else {
+				flapRight.set_value(false);
+				flapExtendR = false;
+				pros::delay(250);
+			}
+    	}
+		/*if (master.get_digital(DIGITAL_B)) {
       		if (indexerd == false) {
 				indexer.set_value(true);
 				indexerd = true;
@@ -57,12 +88,10 @@ void opcontrol() {
 				indexerd = false;
 				pros::delay(250);
 			}
-		}
-		 
+		} */
+		 /*
 		
-		if (cataLimit.get_value() == 0) { 
-			catapultMotor.move_velocity(-120); 
-		}
+
 		else if (master.get_digital(DIGITAL_R1)) {
 			catapultMotor.move(-127);
 		}  
@@ -70,19 +99,57 @@ void opcontrol() {
 			catapultMotor.move(0);
 			catapultMotor.set_brake_mode(MOTOR_BRAKE_BRAKE);
 			catapultMotor.brake();
-		}
+		} 
+			*/
+		
+		pros::Controller master(pros::E_CONTROLLER_MASTER);
 
 		
-
+        if (master.get_digital_new_press(DIGITAL_Y)) {
+            mode = 1;
+        }
+        if (master.get_digital_new_press(DIGITAL_B)) {
+            mode = 2;
+        }
+        if (master.get_digital_new_press(DIGITAL_DOWN)) {
+            mode = 3; 
+        }
 		if (master.get_digital(DIGITAL_L1)) {
+			if (reciever == true) {
+				reciever = false; 
+			}
+			else {
+				reciever = true; 
+			}
+		
+		}
+        if (mode == 1) { // Base Catapult Down
+            if (pros::c::ext_adi_digital_read(expander_PORT,EXT_cataLimit_PORT) == false) { 
+                catapultMotor.set_brake_mode(MOTOR_BRAKE_BRAKE);
+				catapultMotor.move_velocity(-100);
+            }   else {
+				catapultMotor.brake();
+			}
+        } else if (mode == 2) { // catapult up 
+            catapultMotor.set_brake_mode(MOTOR_BRAKE_COAST);
+			catapultMotor.brake();
+        } else if (mode == 3) { // catapult automatic 
+            catapultMotor.move_velocity(-200); 
+        } else if (reciever == true) {
+  			catapultMotor.move_velocity(-200);
+        } else {
+            catapultMotor.move_velocity(0);
+        }
+
+		if (master.get_digital(DIGITAL_R1)) {
 			intakeMotor.move(127);
 		}
-		else if (master.get_digital(DIGITAL_L2)) {
+		else if (master.get_digital(DIGITAL_R2)) {
 			intakeMotor.move(-127);
 		}
 		else {
 			intakeMotor.move(0);
-		} 
+		}
 		/*
 		if (master.get_digital(DIGITAL_B)){
       		if (climbPTO == false) {
@@ -102,5 +169,6 @@ void opcontrol() {
 		rightMiddleMotor.move(-1*right);
 		rightBackMotor.move(-1*right);
 		pros::delay(10);
-	}
+}
+
 }

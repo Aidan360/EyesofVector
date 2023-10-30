@@ -32,13 +32,13 @@ void BasicChassis::goForward(double inch) {
     double lastError = 0;
     integral = 0;
     double count = 0;
-    double counter = 10; 
+    double counter = 50; 
     pros::c::adi_encoder_t enc = pros::c::adi_encoder_init(8,7,true);
     error = (inch/(radi*pi))*360/2 - pros::c::adi_encoder_get(enc);  
     while (abs(error) > 10.41741446) { 
     error = (inch/(radi*pi))*360/2  - pros::c::adi_encoder_get(enc);  
 //    pros::lcd::print(0, "Obama %d\n", (pros::c::adi_encoder_get(enc) * 3.25 / 360));
-    pros::lcd::print(0, "Obama Value: %d\n",int((error/360)*pi*radi*100));
+    pros::lcd::print(0, "Odom Value: %d\n",int((error/360)*pi*radi*100));
     integral = integral + error; 
     derivative = error - lastError;
     double output = fkP*error + fkI*integral + fkD*derivative + sgn(error)*fkS ; 
@@ -126,7 +126,7 @@ void BasicChassis::turn(double degree) {
     double counter = 10; 
     while ((abso(error) > 0.25)) { 
     error = degree - pros::c::imu_get_heading(12);  
-    pros::lcd::print(0, "Balls %f", pros::c::imu_get_heading(12));
+    pros::lcd::print(0, "Heading %f", pros::c::imu_get_heading(12));
     pros::lcd::print(3,"count %f", count);
     integral = integral + error; 
     derivative = error - lastError;
@@ -144,7 +144,7 @@ void BasicChassis::turn(double degree) {
     } 
     if (counter < count) {
         break;
-    } 
+    }  
     pros::delay(10);
     }  
 
