@@ -2,6 +2,7 @@
 #include "main.h"
 #include "pros/adi.h"
 #include "pros/llemu.h"
+#include "pros/misc.hpp"
 #include "pros/motors.h"
 #include "pros/motors.hpp"
 #include "math.h"
@@ -207,3 +208,20 @@ for (int i = 0; i < std::size(motorPortLeft); ++i) {
 
 }
 
+int BasicChassis::calibrator(float inputP, float inputI, float inputD, float inputS) {
+    bool kScal;
+    bool kPcal;
+    bool kIcal;
+    bool kDcal;
+    pros::Controller master(pros::E_CONTROLLER_MASTER);
+    while (true) {
+        if (pros::battery::get_capacity() <= 30) {
+            master.rumble("..--..--");
+            pros::lcd::print(0, "PID Values %f", pros::c::imu_get_heading(12));
+        }
+
+
+
+    }
+    return(1);
+}

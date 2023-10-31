@@ -24,11 +24,11 @@
         char IMUPort; 
         char top;
         char bottom;
-;
         void goForward(double inch);
         void turn(double degree);
         void goForwardM(double distance, double velocity);
         void turnM(double degrees, double velocity);
+        int calibrator(float inputP, float inputI, float inputD, float inputS); 
         private: 
         double velVol = 600/rpm;
         double error;
@@ -48,4 +48,3 @@
     }; 
 
 extern BasicChassis driveTrain; 
-
