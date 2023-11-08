@@ -21,6 +21,11 @@
         double fkP;
         double fkI;
         double fkD;
+        double ckP;
+        double ckI;
+        double ckD;
+        double ckS;
+        bool fail; // failsafe for calibrator 
         char IMUPort; 
         char top;
         char bottom;
@@ -28,7 +33,8 @@
         void turn(double degree);
         void goForwardM(double distance, double velocity);
         void turnM(double degrees, double velocity);
-        int calibrator(float inputP, float inputI, float inputD, float inputS); 
+        int calibrator(float inputP, float inputI, float inputD, float inputS,bool type); 
+        double runner(bool type);
         private: 
         double velVol = 600/rpm;
         double error;

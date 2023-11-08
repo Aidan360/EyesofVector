@@ -29,12 +29,15 @@ double sgn(double x) {
     }
 }
 void BasicChassis::goForward(double inch) {
-    double error = 0;
+    pros::c::adi_encoder_t enc = pros::c::adi_encoder_init(8,7,true);
+    
+    error = (inch/(radi*pi))*360/2  - pros::c::adi_encoder_get(enc);
     double lastError = 0;
     integral = 0;
     double count = 0;
     double counter = 50; 
-    pros::c::adi_encoder_t enc = pros::c::adi_encoder_init(8,7,true);
+    fail = false;
+    int interror = sgn(error);
     error = (inch/(radi*pi))*360/2 - pros::c::adi_encoder_get(enc);  
     while (abs(error) > 10.41741446) { 
     error = (inch/(radi*pi))*360/2  - pros::c::adi_encoder_get(enc);  
@@ -55,6 +58,7 @@ void BasicChassis::goForward(double inch) {
         count = 0;
     } 
     if (counter < count) {
+        fail = true;    
         break;
     } 
     pros::delay(10);
@@ -119,7 +123,9 @@ void BasicChassis::goForwardM(double distance, double velocity) { // Horizontal
         pros::c::motor_move_relative(motorPortRight[i],rotationDegrees,velocity*velVol);
     } */
 void BasicChassis::turn(double degree) {
-    double error = degree - pros::c::imu_get_heading(12);
+    error = degree - pros::c::imu_get_heading(12);
+    int intError = sgn(error);
+    fail = false;
     double lastError = 0;
     double output;
     integral = 0;
@@ -142,12 +148,18 @@ void BasicChassis::turn(double degree) {
     }
     else {
         count = 0;
-    } 
-    if (counter < count) {
-        break;
     }  
+    if (counter < count) {
+        fail = true;
+        break;
+    } 
+    if (sgn(error) != intError) {
+        integral = 0;
+        intError = sgn(error);
+    }
     pros::delay(10);
     }  
+
 
     pros::lcd::print(1, "done %f", pros::c::imu_get_heading(12)); 
 
@@ -208,17 +220,70 @@ for (int i = 0; i < std::size(motorPortLeft); ++i) {
 
 }
 
-int BasicChassis::calibrator(float inputP, float inputI, float inputD, float inputS) {
+int BasicChassis::calibrator(float inputP, float inputI, float inputD, float inputS,bool type) { // turn = 0, forward = 1
     bool kScal;
     bool kPcal;
     bool kIcal;
     bool kDcal;
+    int mode;
     pros::Controller master(pros::E_CONTROLLER_MASTER);
     while (true) {
         if (pros::battery::get_capacity() <= 30) {
             master.rumble("..--..--");
-            pros::lcd::print(0, "PID Values %f", pros::c::imu_get_heading(12));
+            pros::lcd::print(0, "PID Values %f");
+            pros::lcd::print(1, "kP%f", ckP);
+            pros::lcd::print(2, "kI%f", ckI);
+            pros::lcd::print(3, "kD%f", ckD);
+            pros::lcd::print(4, "kS%f", ckS);       
         }
+        if (pros::c::motor_get_temperature(1) >= 50) {
+            master.rumble("----....");
+            pros::lcd::print(0, "PID Values %f");
+            pros::lcd::print(1, "kP%f", ckP);
+            pros::lcd::print(2, "kI%f", ckI);
+            pros::lcd::print(3, "kD%f", ckD);
+            pros::lcd::print(4, "kS%f", ckS);       
+        }
+        
+        if (kScal == true) { // don't understand this alexis its just my code 
+            if (kPcal == true) {
+                if (kIcal == true) {
+                    if (kDcal == true) {
+                        break;
+                    } else {
+            
+                    }
+                } else {
+        
+                }
+            } else {
+                if (type == 0) {
+                    tkS = inputS;
+                    tkP = 0;
+                    tkI = 0;
+                    tkD = 0;
+                    while (true) {
+                        double output = tkS; 
+                        double count; 
+                        for (int i = 0; i < std::size(motorPortLeft); ++i) {
+                                pros::c::motor_move_voltage(motorPortLeft[i],-output);
+                                pros::c::motor_move_voltage(motorPortRight[i],output);
+                        }
+                        pros::delay(500);
+                        if (int(pros::c::motor_get_actual_velocity(motorPortLeft[1])) == 0) {
+                            tkS = tkS + 0.5;
+                        }
+
+                    }
+                }
+                
+            }
+        }       
+
+    
+
+
+        
 
 
 

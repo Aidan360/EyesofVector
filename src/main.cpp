@@ -15,7 +15,7 @@
     pros::Motor catapultMotor (catapultMotor_PORT);
 	pros::Motor intakeMotor(intakeMotor_PORT);
     //pros::ADIDigitalOut climbingPTO (climbingPTO_PORT);
-     pros::ADIDigitalOut flapLeft (EXT_flapLeft_PORT);
+     pros::ADIDigitalOut flapLeft ({{expander_PORT,EXT_flapLeft_PORT}});
     pros::ADIDigitalOut flapRight ({{expander_PORT,EXT_flapRight_PORT}});
 	pros::ADIDigitalIn cataLimit ({{expander_PORT,EXT_cataLimit_PORT}});
 	pros::ADIDigitalOut indexer ({{expander_PORT,indexer_PORT}});
