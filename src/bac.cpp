@@ -53,7 +53,10 @@ void BasicChassis::goForward(double inch) {
     lastError = error; 
     if (int(pros::c::motor_get_actual_velocity(motorPortLeft[1])) == 0) {
         count = count + 1;
-    }
+    } 
+  /*  if (error == lastError) {
+        count = count+1;
+    } */
     else {
         count = 0;
     } 
@@ -152,7 +155,7 @@ void BasicChassis::turn(double degree) {
     if (counter < count) {
         fail = true;
         break;
-    } 
+    }  
     if (sgn(error) != intError) {
         integral = 0;
         intError = sgn(error);
