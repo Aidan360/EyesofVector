@@ -12,7 +12,6 @@
     pros::Motor rightFrontMotor (rightFrontMotor_PORT);
     pros::Motor rightMiddleMotor (rightMiddleMotor_PORT);
     pros::Motor rightBackMotor (rightBackMotor_PORT);
-    pros::Motor catapultMotor (catapultMotor_PORT);
 	pros::Motor intakeMotor(intakeMotor_PORT);
     //pros::ADIDigitalOut climbingPTO (climbingPTO_PORT);
      pros::ADIDigitalOut flapLeft ({{expander_PORT,EXT_flapLeft_PORT}});
@@ -104,42 +103,7 @@ void opcontrol() {
 		
 		pros::Controller master(pros::E_CONTROLLER_MASTER);
 
-		
-        if (master.get_digital_new_press(DIGITAL_Y)) {
-            mode = 1;
-        }
-        if (master.get_digital_new_press(DIGITAL_B)) {
-            mode = 2;
-        }
-        if (master.get_digital_new_press(DIGITAL_DOWN)) {
-            mode = 3; 
-        }
-		if (master.get_digital(DIGITAL_L1)) {
-			if (reciever == true) {
-				reciever = false; 
-			}
-			else {
-				reciever = true; 
-			}
-		
-		}
-        if (mode == 1) { // Base Catapult Down
-            if (pros::c::ext_adi_digital_read(expander_PORT,EXT_cataLimit_PORT) == false) { 
-                catapultMotor.set_brake_mode(MOTOR_BRAKE_BRAKE);
-				catapultMotor.move_velocity(-100);
-            }   else {
-				catapultMotor.brake();
-			}
-        } else if (mode == 2) { // catapult up 
-            catapultMotor.set_brake_mode(MOTOR_BRAKE_COAST);
-			catapultMotor.brake();
-        } else if (mode == 3) { // catapult automatic 
-            catapultMotor.move_velocity(-200); 
-        } else if (reciever == true) {
-  			catapultMotor.move_velocity(-200);
-        } else {
-            catapultMotor.move_velocity(0);
-        }
+
 
 		if (master.get_digital(DIGITAL_R1)) {
 			intakeMotor.move(127);

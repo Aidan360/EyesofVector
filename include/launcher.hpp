@@ -1,11 +1,18 @@
+#include "main.h"
 #include "initialize.hpp"
+#include <string>
+#include <vector> 
 
-class catapult { 
+class flyWheel { 
     public:
-    int mode; 
-    int catapultMotor;
-    char limitSwitch;
-    char extenderPort;
-    bool reciever;
-    int catapultThread();
+    double kS;
+    double kV;
+    double kP;
+    double kI;
+    double kD;
+    void spinAt(float velocity); 
+    char flyWheelPort;
+    bool kill = false;
 };
+
+extern flyWheel flyWheel; 

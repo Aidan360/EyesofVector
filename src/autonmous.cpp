@@ -30,7 +30,6 @@ void autonomous() {
 
    */
    //driveTrain.turn(360,360);
-	 pros::Motor catapultMotor (catapultMotor_PORT);
 	 pros::Motor intakeMotor(intakeMotor_PORT); 
    pros::ADIDigitalOut flapLeft ({{expander_PORT,EXT_flapLeft_PORT}});
    pros::ADIDigitalOut flapRight ({{expander_PORT,EXT_flapRight_PORT}});

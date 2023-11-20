@@ -8,7 +8,7 @@
 #define rightMiddleMotor_PORT 5 // Speed
 #define rightBackMotor_PORT 6 // Speed
 #define intakeMotor_PORT 7 // Speed
-#define catapultMotor_PORT 8 // Torque?? 
+#define flyWheelMotor_PORT 8 // Torque?? 
 #define expander_PORT 11 // extender for other sensors
 #define vision_PORT 12 // vision sensor, may add another.
 #define IMU_PORT 10 // Port for Temporary IMU 
@@ -38,7 +38,7 @@ extern float ChassisPIDValues[6];
 
 
 
-
-
+extern double sgn(double x);
+extern double abso(double x);
 extern void odometryThread();
 extern void graphicsThread();
