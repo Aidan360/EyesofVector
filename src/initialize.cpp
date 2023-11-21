@@ -4,6 +4,13 @@
 #include "bac.hpp" 
 #include "launcher.hpp"
 
+void flyWheelTask() { 
+   flyWheel spinnyThing;
+   globalRPM = 3600;
+   spinnyThing.spinAt(globalRPM);
+}
+
+
 void initialize() {
 	// initializers
     pros::lcd::initialize();
@@ -13,7 +20,7 @@ void initialize() {
     pros::Motor rightFrontMotor_initializer (rightFrontMotor_PORT, pros::E_MOTOR_GEARSET_06, true, pros::E_MOTOR_ENCODER_DEGREES);
     pros::Motor rightMiddleMotor_initializer (rightMiddleMotor_PORT, pros::E_MOTOR_GEARSET_06, true, pros::E_MOTOR_ENCODER_DEGREES); 
     pros::Motor rightBackMotor_initializer (rightBackMotor_PORT, pros::E_MOTOR_GEARSET_06, false, pros::E_MOTOR_ENCODER_DEGREES);
-       pros::Motor intake_initializer (intakeMotor_PORT, pros::E_MOTOR_GEARSET_06, false, pros::E_MOTOR_ENCODER_DEGREES);
+    pros::Motor intake_initializer (intakeMotor_PORT, pros::E_MOTOR_GEARSET_06, false, pros::E_MOTOR_ENCODER_DEGREES);
     pros::ADIEncoder encoderL_initializer (encoderLeftTop_PORT,encoderLeftBottom_PORT, false);
     pros::ADIEncoder encoderR_initializer (encoderRightTop_PORT,encoderRightBottom_PORT, false);
     pros::ADIEncoder encoderB_initializer (encoderBackTop_PORT,encoderBackBottom_PORT, false);
@@ -46,6 +53,8 @@ void initialize() {
     pros::c::imu_set_heading(IMU_PORT,5);
     pros::c::imu_set_rotation(IMU_PORT, 5);
   
+   Task my_task(flyWheelTask(),(void),flyWheelT);
+
   
    //catapult Catapult; 
    //pros::Task task1(Catapult.catapultThread());

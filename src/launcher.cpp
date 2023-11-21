@@ -21,6 +21,7 @@ void flyWheel::spinAt(float rpm) {
             integral = 0;
             intError = sgn(error);
         }
+        rpm = globalRPM; 
     }
 
 }

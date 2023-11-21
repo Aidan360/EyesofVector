@@ -15,4 +15,5 @@ class flyWheel {
     bool kill = false;
 };
 
-extern flyWheel flyWheel; 
+extern flyWheel spinnyThing; 
+extern float globalRPM; 
