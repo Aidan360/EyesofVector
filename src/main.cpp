@@ -6,6 +6,7 @@
 #include "pros/misc.h"
 #include "pros/motors.h"
 #include "pros/rtos.hpp"
+#include "launcher.hpp"
     pros::Motor leftFrontMotor (leftFrontMotor_PORT);
     pros::Motor leftMiddleMotor (leftMiddleMotor_PORT);
     pros::Motor leftBackMotor (leftBackMotor_PORT);

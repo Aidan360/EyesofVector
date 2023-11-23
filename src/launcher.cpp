@@ -11,7 +11,7 @@ void flyWheel::spinAt(float rpm) {
     int intError = sgn(error);
 
     while (kill == false) {
-        pros::lcd::print(2, "Flywheel Speed%d\n",int(rpm*7));
+        pros::lcd::print(2, "Flywheel Speed%d\n",int(rpm));
 
         error = rpm/7 - pros::c::motor_get_actual_velocity(flyWheelPort); 
         integral = integral + error;

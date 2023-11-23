@@ -6,7 +6,12 @@
 
 void flyWheelTask() { 
    flyWheel spinnyThing;
-   globalRPM = 3600;
+   spinnyThing.kS = 0;
+   spinnyThing.kV = 0;
+   spinnyThing.kP = 0;
+   spinnyThing.kI = 0;
+   spinnyThing.kD = 0;
+   globalRPM = 4200;
    spinnyThing.spinAt(globalRPM);
 }
 
@@ -53,7 +58,7 @@ void initialize() {
     pros::c::imu_set_heading(IMU_PORT,5);
     pros::c::imu_set_rotation(IMU_PORT, 5);
   
-   Task my_task(flyWheelTask(),(void),flyWheelT);
+   Task my_task(flyWheelTask);
 
   
    //catapult Catapult; 
