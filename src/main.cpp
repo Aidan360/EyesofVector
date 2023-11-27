@@ -19,7 +19,9 @@
     pros::ADIDigitalOut flapRight ({{expander_PORT,EXT_flapRight_PORT}});
 	pros::ADIDigitalIn cataLimit ({{expander_PORT,EXT_cataLimit_PORT}});
 	pros::ADIDigitalOut indexer ({{expander_PORT,indexer_PORT}});
-void disabled() {}
+void disabled() {
+	globalRPM = 0;
+}
 
 void competition_initialize() {}
 
@@ -36,10 +38,12 @@ void competition_initialize() {}
 
   
 void opcontrol() {
+	
 	pros::Controller master(pros::E_CONTROLLER_MASTER);
 	 pros::lcd::print(2,"count");
 
 	while (true) {
+		globalRPM = 2000;
 //	  pros::lcd::print(0, "Head %f", pros::c::imu_get_heading(12));
 		if (master.get_digital(DIGITAL_RIGHT)) {
       		if (flapExtendL == false) {

@@ -41,7 +41,7 @@ void autonomous() {
     pros::c::adi_encoder_reset(enc);
     	pros::c::imu_set_heading(12, 180);
   
-    driveTrain.goForward(-48);
+ //   driveTrain.goForward(-48);
 
   //                                        AUTONOMOUS SKILLS
   //driveTrain.goForward(2);

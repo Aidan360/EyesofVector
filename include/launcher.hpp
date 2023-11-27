@@ -16,4 +16,4 @@ class flyWheel {
 };
 
 extern flyWheel spinnyThing; 
-extern float globalRPM; 
+extern int globalRPM; 

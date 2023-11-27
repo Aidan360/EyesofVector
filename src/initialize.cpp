@@ -4,15 +4,59 @@
 #include "bac.hpp" 
 #include "launcher.hpp"
 
-void flyWheelTask() { 
+void flyWheelTask() {
+   
+   /* Mini logs to know what I did
+    ks =1 
+    ks = 100
+    ks 10000
+    ks 500
+    kS = 700
+    kS = 1000
+    kS = 1100
+    kS = 1500
+    kS = 2000, upper limit
+    kS = 1900 lower limit
+    ks = 1950
+    kS = 1975 upper limit
+    kS = 1960
+    kS = 1955
+    kS = 1957 no move
+    kS = 1959 move
+    kS = 1958 no move 
+    kS = 1959 no move
+    kS = 1960
+    kS = 1965
+    kS = 1970
+    kS = 1965 
+    kS = 1970
+    kS = 1975
+    kS = 1980 
+    kS = 1995
+    kS = 2000 no movement 
+    kS = 2100
+    kS = 2200
+    kS = 2300
+
+    kV = 1
+    kV = 50 upper
+    kV = 25 lower
+    kV = 35
+    Kv = 40
+    kP = 1
+    kP = 10
+   */ 
+
    flyWheel spinnyThing;
-   spinnyThing.kS = 0;
-   spinnyThing.kV = 0;
-   spinnyThing.kP = 0;
-   spinnyThing.kI = 0;
+   spinnyThing.kS = 2200; // 2200
+   spinnyThing.kV = 36;
+   spinnyThing.kP = 10;
+   spinnyThing.kI = .1;
    spinnyThing.kD = 0;
-   globalRPM = 4200;
+   spinnyThing.flyWheelPort = flyWheelMotor_PORT;
+   globalRPM = 2000;
    spinnyThing.spinAt(globalRPM);
+
 }
 
 
@@ -58,7 +102,7 @@ void initialize() {
     pros::c::imu_set_heading(IMU_PORT,5);
     pros::c::imu_set_rotation(IMU_PORT, 5);
   
-   Task my_task(flyWheelTask);
+  Task my_task(flyWheelTask);
 
   
    //catapult Catapult; 
