@@ -43,7 +43,7 @@ void opcontrol() {
 	 pros::lcd::print(2,"count");
 
 	while (true) {
-		globalRPM = 2000;
+		
 //	  pros::lcd::print(0, "Head %f", pros::c::imu_get_heading(12));
 		if (master.get_digital(DIGITAL_RIGHT)) {
       		if (flapExtendL == false) {
@@ -82,6 +82,12 @@ void opcontrol() {
 				pros::delay(250);
 			}
     	}
+		if (master.get_digital_new_press(DIGITAL_B)) {
+            globalRPM = 0;
+        }
+		if (master.get_digital_new_press(DIGITAL_DOWN)) {
+            globalRPM = 2000;
+        }
 		/*if (master.get_digital(DIGITAL_B)) {
       		if (indexerd == false) {
 				indexer.set_value(true);

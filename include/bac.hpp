@@ -8,9 +8,13 @@
         public:
         std::vector<int> motorPortLeft;
         std::vector<int> motorPortRight;
+        
+        std::vector<float[2]> pursuitPoints; // x and y are the two values
+        int segments = std::size(pursuitPoints)-1; 
+        
         float rpm = 360; 
         float wheelSize;
-        double velocity;
+        float lookAheadRadius;   
         float trackLength;
         public: 
         double tkS;
@@ -24,17 +28,40 @@
         double ckP;
         double ckI;
         double ckD;
-        double ckS;
+        double ckS; 
+        // New PID variables made for Pure pursuit and Independent Chassis Control. The t variables can still be used for other purposes l is for left side r is for right side
+        // there shouldn't be much difference in l and r but if there is the PIDs should correct that. 
+        double lkS; 
+        double lkV; 
+        double lkP; 
+        double lkI; 
+        double lkD; 
+        double rkS;
+        double rkV; 
+        double rkP; 
+        double rkI; 
+        double rkD; 
+
+        void leftSide(double velocity);  
+        void rightSide(double velocity); 
+
         bool fail; // failsafe for calibrator 
         char IMUPort; 
-        char top;
-        char bottom;
-        void goForward(double inch);
-        void turn(double degree);
+        char top; // uhhh don't use
+        char bottom; // uhhh don't use
+        double position[2]; // x,y
+        double velocity[3]; // x,y and current 
+        double heading; // radians
+        double distance; // Relative to PID functions but 
+        void goForward(double inch); // currently broken :/
+        void turn(double degree); 
         void goForwardM(double distance, double velocity);
         void turnM(double degrees, double velocity);
         int calibrator(float inputP, float inputI, float inputD, float inputS,bool type); 
+        void OdometryThread();
+        void PurePursuitThread();
         double runner(bool type);
+        
         private: 
         double velVol = 600/rpm;
         double error;

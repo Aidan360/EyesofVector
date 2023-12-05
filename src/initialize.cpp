@@ -49,9 +49,9 @@ void flyWheelTask() {
 
    flyWheel spinnyThing;
    spinnyThing.kS = 2200; // 2200
-   spinnyThing.kV = 36;
-   spinnyThing.kP = 10;
-   spinnyThing.kI = .1;
+   spinnyThing.kV = 36; // 36
+   spinnyThing.kP = 10; // 10
+   spinnyThing.kI = 0; // no use 
    spinnyThing.kD = 0;
    spinnyThing.flyWheelPort = flyWheelMotor_PORT;
    globalRPM = 2000;
