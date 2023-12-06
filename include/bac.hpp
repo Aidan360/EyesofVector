@@ -9,7 +9,7 @@
         std::vector<int> motorPortLeft;
         std::vector<int> motorPortRight;
         
-        std::vector<float[2]> pursuitPoints; // x and y are the two values
+        std::vector<float[3]> pursuitPoints; // x and y positions with velcoity being the values
         int segments = std::size(pursuitPoints)-1; 
         
         float rpm = 360; 
@@ -60,6 +60,7 @@
         int calibrator(float inputP, float inputI, float inputD, float inputS,bool type); 
         void OdometryThread();
         void PurePursuitThread();
+        bool trackingCheck(double x1, double x2, double y1, double y2);
         double runner(bool type);
         
         private: 
