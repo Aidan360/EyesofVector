@@ -1,5 +1,6 @@
 #include "bac.hpp"
 #include "initialize.hpp"
+#include <limits>
 void BasicChassis::PurePursuitThread() { // Pure Pursuit runner will be put into a infinite loop in autonomous, when diffrent flags are met things can trigger.
     int currentPoints[2] = {0,1};
     double sol_x1;
@@ -28,7 +29,28 @@ void BasicChassis::PurePursuitThread() { // Pure Pursuit runner will be put into
             sol_x2 = (D * dy - sgn(dy) * dx * sqrt(discriminant)) / pow(dr,2);
             sol_y1 = (-D * dx + abso(dy) * sqrt(discriminant)) / pow(dr,2);
             sol_y2 = (-D * dx - abso(dy) * sqrt(discriminant)) / pow(dr,2);
-        } 
+
+            if(!(x1Offset < sol_x1 < x2Offset) && !(y1Offset < sol_y1 < y2Offset)) { 
+                discriminant = 0;
+            }
+            else if(!(x1Offset < sol_x2 < x2Offset) && !(y1Offset < sol_y2 < y2Offset)) {
+                discriminant = 0; 
+            }   
+            else {
+                
+            }         
+        } // !(x1Offset < sol_x2 < x2Offset)   && !(y1Offset < sol_y2 < y2Offset)
+        if (discriminant == 0) {
+            if(!(x1Offset < sol_x1 < x2Offset) && !(y1Offset < sol_y1 < y2Offset)) { 
+                discriminant = 0;
+            }
+            else if(!(x1Offset < sol_x2 < x2Offset) && !(y1Offset < sol_y2 < y2Offset)) {
+                discriminant = 0; 
+            }  
+        }
+        if (discriminant <= 0) {
+
+        }
     }
     // look ahead radius^2 * distance formula of both points^2 * (x1y2 - x2y1)^2 if positive two intersections?
     // reminder to install limits of the two points
