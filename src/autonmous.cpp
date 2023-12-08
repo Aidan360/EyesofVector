@@ -4,10 +4,13 @@
 #include "pros/adi.hpp"
 #include "pros/imu.h"
 #include "pros/misc.h"
+BasicChassis driveTrain; 
+void ppint() {
+  driveTrain.PurePursuitThread();
+}
 
 void autonomous() {
   	 pros::lcd::print(1,"count");
-  BasicChassis driveTrain; 
   driveTrain.motorPortLeft.push_back(leftFrontMotor_PORT);
   driveTrain.motorPortLeft.push_back(leftMiddleMotor_PORT);
   driveTrain.motorPortLeft.push_back(leftBackMotor_PORT);
@@ -25,10 +28,27 @@ void autonomous() {
   driveTrain.fkP = 16.5; // 18
   driveTrain.fkI = 0.015; // 0.02
   driveTrain.fkD = 0.2; // 0.2
+  
+  // Random values I put in.
+  driveTrain.lkS = 250;
+  driveTrain.lkV = 15;
+  driveTrain.lkP = 1;
+  driveTrain.lkI = 0.001;
+  driveTrain.lkD = 0.01;
+  
+  driveTrain.rkS = driveTrain.lkS;
+  driveTrain.rkV = driveTrain.lkV;
+  driveTrain.rkP = driveTrain.lkP;
+  driveTrain.rkI = driveTrain.lkI;
+  driveTrain.rkD = driveTrain.lkD; 
+  
+  driveTrain.vC = 1; 
+  driveTrain.lookAheadRadius = 18;
   /* PID testing logs
- 
+
 
    */
+   
    //driveTrain.turn(360,360);
 	 pros::Motor intakeMotor(intakeMotor_PORT); 
    pros::ADIDigitalOut flapLeft ({{expander_PORT,EXT_flapLeft_PORT}});
@@ -40,7 +60,21 @@ void autonomous() {
    pros::delay(250);
     pros::c::adi_encoder_reset(enc);
     	pros::c::imu_set_heading(12, 180);
-  
+  Task task(ppint);
+  // simple circle drive  
+  driveTrain.position[0] = 70;
+  driveTrain.position[1] = 70;
+  driveTrain.heading = 180;
+
+  driveTrain.pursuitPoints.push_back({84,84,320});
+  driveTrain.pursuitPoints.push_back({96,84,320});
+  driveTrain.pursuitPoints.push_back({108,70,320});
+  driveTrain.pursuitPoints.push_back({108,58,320});
+  driveTrain.pursuitPoints.push_back({96,46,320});
+  driveTrain.pursuitPoints.push_back({84,46,320});
+  driveTrain.pursuitPoints.push_back({70,58,320});
+  driveTrain.pursuitPoints.push_back({70,70,320});
+
  //   driveTrain.goForward(-48);
 
   //                                        AUTONOMOUS SKILLS

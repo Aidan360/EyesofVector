@@ -2,7 +2,6 @@
 #include "initialize.hpp"
 #include <limits>
 bool BasicChassis::trackingCheck(double x1, double x2, double y1, double y2) { // Pure Pursuit runner will be put into a infinite loop in autonomous, when diffrent flags are met things can trigger.
-    int currentPoints[2] = {0,1};
     double sol_x1;
     double sol_x2;
     double sol_y1;
@@ -56,18 +55,7 @@ bool BasicChassis::trackingCheck(double x1, double x2, double y1, double y2) { /
             return false;
         }
         
-    // look ahead radius^2 * distance formula of both points^2 * (x1y2 - x2y1)^2 if positive two intersections?
-    // reminder to install limits of the two points
 }
-
-
-/* Velocity Dampener */
-/* 
-    for every x degree off x RPM increases and decreases on both sides of the chassis to maintain speed while turning. 
-
-    for initial testing 1 degree per one rpm (max 360 so 360 degree turn will be pos 360 and -360)
-
-*/
 
 void BasicChassis::leftSide(double velocity) {
     double lastError = 0;
@@ -89,6 +77,7 @@ void BasicChassis::leftSide(double velocity) {
             integral = 0;
             intError = sgn(error);
         }
+        velocity = leftVelocity;
         pros::delay(10);
 
     }
@@ -112,9 +101,32 @@ void BasicChassis::rightSide(double velocity) {
             integral = 0;
             intError = sgn(error);
         }
+        velocity = rightVelocity;
         pros::delay(10);
 
     }
 }
 
+void BasicChassis::PurePursuitThread() { // pure pursuit should work :D
+    while (true){
+    double correctionVelocity = vC* atan2(pursuitPoints[lastPointIndex + 1][1] - position[1],pursuitPoints[lastPointIndex + 1][0] - position[0]); // correctional velocity 
 
+    if (trackingCheck(pursuitPoints[lastPointIndex][0], pursuitPoints[lastPointIndex + 1][0], pursuitPoints[lastPointIndex][1], pursuitPoints[lastPointIndex + 1][1])) {
+        leftVelocity = pursuitPoints[lastPointIndex + 1][2] + correctionVelocity;
+        rightVelocity = pursuitPoints[lastPointIndex + 1][2] - correctionVelocity;
+    }
+    else { 
+        leftVelocity = 0.5 *pursuitPoints[lastPointIndex + 1][2] + 2*correctionVelocity;
+        rightVelocity = 0.5 * pursuitPoints[lastPointIndex + 1][2] - 2*correctionVelocity;
+    }
+
+    double distToNextPoint = sqrt(pow(pursuitPoints[lastPointIndex + 1][0] - position[0],2) + pow(pursuitPoints[lastPointIndex + 1][1] - position[0],2));
+        if (distToNextPoint >= lookAheadRadius) {
+            lastPointIndex++;
+        } // moves the path onto the next point
+    }
+    if (PursuitKill == 1) {
+        leftVelocity = 0;
+        rightVelocity = 0;
+    }
+} 

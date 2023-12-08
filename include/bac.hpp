@@ -9,7 +9,7 @@
         std::vector<int> motorPortLeft;
         std::vector<int> motorPortRight;
         
-        std::vector<float[3]> pursuitPoints; // x and y positions with velcoity being the values
+        std::vector<std::array<float,3>> pursuitPoints; // x and y positions with velcoity being the values
         int segments = std::size(pursuitPoints)-1; 
         
         float rpm = 360; 
@@ -41,10 +41,12 @@
         double rkP; 
         double rkI; 
         double rkD; 
-
+        double vC; // correctional velocity variable 
+        int lastPointIndex;
         void leftSide(double velocity);  
+            double leftVelocity;
         void rightSide(double velocity); 
-
+            double rightVelocity;
         bool fail; // failsafe for calibrator 
         char IMUPort; 
         char top; // uhhh don't use
@@ -60,7 +62,15 @@
         int calibrator(float inputP, float inputI, float inputD, float inputS,bool type); 
         void OdometryThread();
         void PurePursuitThread();
+        int PursuitKill = 0;
         bool trackingCheck(double x1, double x2, double y1, double y2);
+        int totalPairs; // Total number of point pairs
+        class pointPair { // object of point pairs and the decider for when to switch to the next point in the pure pursuit. 
+            int PairNum;
+            double pointA[2];
+            double pointB[2];
+            double distFromCenter;
+        };
         double runner(bool type);
         
         private: 
