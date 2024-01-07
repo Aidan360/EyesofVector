@@ -14,13 +14,16 @@
     pros::Motor rightMiddleMotor (rightMiddleMotor_PORT);
     pros::Motor rightBackMotor (rightBackMotor_PORT);
 	pros::Motor intakeMotor(intakeMotor_PORT);
-    //pros::ADIDigitalOut climbingPTO (climbingPTO_PORT);
-     pros::ADIDigitalOut flapLeft ({{expander_PORT,EXT_flapLeft_PORT}});
-    pros::ADIDigitalOut flapRight ({{expander_PORT,EXT_flapRight_PORT}});
+	pros::Motor spinner(flyWheelMotor_PORT);
+    //pros::ADIDigitalOut climbingPTO (climbingPTO_PORT);s
 	pros::ADIDigitalIn cataLimit ({{expander_PORT,EXT_cataLimit_PORT}});
 	pros::ADIDigitalOut indexer ({{expander_PORT,indexer_PORT}});
+	pros::ADIDigitalOut wings (wings_PORT);
+	pros::ADIDigitalOut blocker (blocker_PORT);
 void disabled() {
 	globalRPM = 0;
+//	driveTrain.leftVelocity = 0;
+//	driveTrain.rightVelocity = 0;
 }
 
 void competition_initialize() {}
@@ -29,65 +32,54 @@ void competition_initialize() {}
   float right;
   float power;
   float turn;
-  bool flapExtendR = false;
-  bool flapExtendL = false;
   bool climbPTO = false;
   bool indexerd = false;
   int mode = 2; 
   bool reciever = false;  
-
-  
+	bool flaps = false; 
+  bool block2 = false; 
 void opcontrol() {
 	
 	pros::Controller master(pros::E_CONTROLLER_MASTER);
 	 pros::lcd::print(2,"count");
 
 	while (true) {
+		intakeMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+		
+		if (master.get_digital_new_press(DIGITAL_L1)) {
+			if(flaps == false) {
+				wings.set_value(true);
+				flaps = true;
+			}
+			else {
+				wings.set_value(false);
+				flaps = false; 
+			}
+		}
+		if (master.get_digital_new_press(DIGITAL_L2)) {
+			if(block2 == false) {
+				blocker.set_value(true);
+				block2 = true;
+			}
+			else {
+				blocker.set_value(false);
+				block2 = false; 
+			}
+		}
 		
 //	  pros::lcd::print(0, "Head %f", pros::c::imu_get_heading(12));
-		if (master.get_digital(DIGITAL_RIGHT)) {
-      		if (flapExtendL == false) {
-				flapLeft.set_value(true);
-				flapRight.set_value(true);	
-				flapExtendL = true;
-				flapExtendR = true;
-				pros::delay(250);
-			} else {
-				flapLeft.set_value(false);
-				flapRight.set_value(false);
-				flapExtendL = false;
-				flapExtendR = false;
-				pros::delay(250);
-			}
-    	}
-		if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
-      		if (flapExtendL == false) {
-				flapLeft.set_value(true);
-				flapExtendL = true;
-				pros::delay(250);
-			} else {
-				flapLeft.set_value(false);
-				flapExtendL = false;
-				pros::delay(250);
-			}
-    	}
-		if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
-      		if (flapExtendL == false) {
-				flapRight.set_value(true);
-				flapExtendR = true;
-				pros::delay(250);
-			} else {
-				flapRight.set_value(false);
-				flapExtendR = false;
-				pros::delay(250);
-			}
-    	}
+		
+
 		if (master.get_digital_new_press(DIGITAL_B)) {
-            globalRPM = 0;
+            //globalRPM = 0;
+			spinner.move(-127);
+			
         }
-		if (master.get_digital_new_press(DIGITAL_DOWN)) {
-            globalRPM = 2000;
+		else if (master.get_digital_new_press(DIGITAL_DOWN)) {
+            //globalRPM = 2000;
+			spinner.move(0);
         }
+
 		/*if (master.get_digital(DIGITAL_B)) {
       		if (indexerd == false) {
 				indexer.set_value(true);
@@ -112,7 +104,6 @@ void opcontrol() {
 		} 
 			*/
 		
-		pros::Controller master(pros::E_CONTROLLER_MASTER);
 
 
 
@@ -145,5 +136,4 @@ void opcontrol() {
 		rightBackMotor.move(-1*right);
 		pros::delay(10);
 }
-
 }

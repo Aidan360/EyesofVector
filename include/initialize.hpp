@@ -23,12 +23,13 @@
 #define encoderBackBottom_PORT 6
 //#define climbingPTO_PORT 7
 
- #define encoderBottom_PORT 'h'
- #define encoderTop_PORT 'g'
+
+ #define wings_PORT 'f'
+ #define blocker_PORT 'g'
 
  // 3 wire extender
- #define EXT_flapLeft_PORT 'd'
- #define EXT_flapRight_PORT 'e'
+ #define EXT_flapLeft_PORT 'f'
+ #define EXT_flapRight_PORT 'f'
  #define EXT_cataLimit_PORT 'c'
  #define indexer_PORT 'b'
 

@@ -3,62 +3,44 @@
 #include "pros/adi.hpp"
 #include "bac.hpp" 
 #include "launcher.hpp"
+#include "pros/motors.h"
 
 void flyWheelTask() {
    
    /* Mini logs to know what I did
-    ks =1 
-    ks = 100
-    ks 10000
-    ks 500
-    kS = 700
-    kS = 1000
-    kS = 1100
-    kS = 1500
-    kS = 2000, upper limit
-    kS = 1900 lower limit
-    ks = 1950
-    kS = 1975 upper limit
-    kS = 1960
-    kS = 1955
-    kS = 1957 no move
-    kS = 1959 move
-    kS = 1958 no move 
-    kS = 1959 no move
-    kS = 1960
-    kS = 1965
-    kS = 1970
-    kS = 1965 
-    kS = 1970
-    kS = 1975
-    kS = 1980 
-    kS = 1995
-    kS = 2000 no movement 
-    kS = 2100
-    kS = 2200
-    kS = 2300
-
-    kV = 1
-    kV = 50 upper
-    kV = 25 lower
-    kV = 35
-    Kv = 40
-    kP = 1
-    kP = 10
+      2600
+      2300
+      kv later 
+      30 or 25
    */ 
 
-   flyWheel spinnyThing;
-   spinnyThing.kS = 2200; // 2200
-   spinnyThing.kV = 36; // 36
-   spinnyThing.kP = 10; // 10
-   spinnyThing.kI = 0; // no use 
-   spinnyThing.kD = 0;
+   flyWheel spinnyThing; 
+   spinnyThing.kS = 2300; // 2300
+   spinnyThing.kV = 40; // 36
+   spinnyThing.kP = 30; // 10
+   spinnyThing.kI = 0.05; // no use 
+   spinnyThing.kD = 0.75;
    spinnyThing.flyWheelPort = flyWheelMotor_PORT;
    globalRPM = 2000;
-   spinnyThing.spinAt(globalRPM);
+   //spinnyThing.spinAt(globalRPM);
 
 }
 
+void odometryTask() { 
+  driveTrain.motorPortLeft.push_back(leftFrontMotor_PORT);
+  driveTrain.motorPortLeft.push_back(leftMiddleMotor_PORT);
+  driveTrain.motorPortLeft.push_back(leftBackMotor_PORT);
+  driveTrain.motorPortRight.push_back(rightFrontMotor_PORT);
+  driveTrain.motorPortRight.push_back(rightMiddleMotor_PORT);
+  driveTrain.motorPortRight.push_back(rightBackMotor_PORT);
+  driveTrain.wheelSize = 3.25;
+  driveTrain.trackLength = 12.8; // change when you actually get the robot  */
+   driveTrain.trackLength = 12.8;
+   driveTrain.position[0] = 90;
+   driveTrain.position[1] = 90;
+   driveTrain.heading = 0;
+   driveTrain.OdometryThread();
+} 
 
 void initialize() {
 	// initializers
@@ -102,17 +84,23 @@ void initialize() {
     pros::c::imu_set_heading(IMU_PORT,5);
     pros::c::imu_set_rotation(IMU_PORT, 5);
   
-  Task my_task(flyWheelTask);
-
-  
+   Task my_task(flyWheelTask);
+   Task my_task2(odometryTask);
+   driveTrain.position[0] = 90;
+   driveTrain.position[1] = 90;
+   
    //catapult Catapult; 
    //pros::Task task1(Catapult.catapultThread());
 
+		intakeMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+      leftFrontMotor.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
+      leftMiddleMotor.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
+      leftBackMotor.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
+      rightFrontMotor.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
+      rightMiddleMotor.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
+      rightMiddleMotor.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
+      
 
-
-  //  encoderL.reset();
-  //  encoderR.reset();
-  //  encoderB.reset();
 	 pros::lcd::print(4,"count");
     // Controller Setups
  /* vectorR::chassisController chassis;

@@ -4,21 +4,34 @@
 #include "pros/adi.hpp"
 #include "pros/imu.h"
 #include "pros/misc.h"
+#include "pros/rtos.h"
 BasicChassis driveTrain; 
 void ppint() {
-  driveTrain.PurePursuitThread();
+ // driveTrain.PurePursuitThread();
 }
+void controllerDisplay() {
+  	pros::Controller master(pros::E_CONTROLLER_MASTER);
+  while (true) {
+    master.clear();
+    c::delay(100);
+    master.print(0, 1, "L: %d\n", int(pros::c::motor_get_actual_velocity(driveTrain.motorPortLeft[0])));
+    c::delay(100);
+    master.print(1, 2, "R: %d\n", int(pros::c::motor_get_actual_velocity(driveTrain.motorPortRight[0])));
+    c::delay(100);
+  }
+}
+void leftSide() { // testing function for now. 
+  driveTrain.leftVelocity = 400;
+//  driveTrain.leftSide(400);
 
+}
+void rightSide() {
+  driveTrain.rightVelocity = -400;
+//  driveTrain.rightSide(-400);
+}
 void autonomous() {
   	 pros::lcd::print(1,"count");
-  driveTrain.motorPortLeft.push_back(leftFrontMotor_PORT);
-  driveTrain.motorPortLeft.push_back(leftMiddleMotor_PORT);
-  driveTrain.motorPortLeft.push_back(leftBackMotor_PORT);
-  driveTrain.motorPortRight.push_back(rightFrontMotor_PORT);
-  driveTrain.motorPortRight.push_back(rightMiddleMotor_PORT);
-  driveTrain.motorPortRight.push_back(rightBackMotor_PORT);
-  driveTrain.wheelSize = 3.25;
-  driveTrain.trackLength = 12.75; // change when you actually get the robot  */
+  Task myTask5(controllerDisplay);
  // driveTrain.tkS = 2000; 
   driveTrain.tkP = 115; // 115
   driveTrain.tkI = 0.0045; // 0.005
@@ -30,15 +43,15 @@ void autonomous() {
   driveTrain.fkD = 0.2; // 0.2
   
   // Random values I put in.
-  driveTrain.lkS = 250;
-  driveTrain.lkV = 15;
-  driveTrain.lkP = 1;
-  driveTrain.lkI = 0.001;
-  driveTrain.lkD = 0.01;
+  driveTrain.lkS = 0;  // 2800
+  driveTrain.lkV = 0;
+  driveTrain.lkP = 250;
+  driveTrain.lkI = 0;
+  driveTrain.lkD = 0;
   
-  driveTrain.rkS = driveTrain.lkS;
+  driveTrain.rkS = 0; //2500
   driveTrain.rkV = driveTrain.lkV;
-  driveTrain.rkP = driveTrain.lkP;
+  driveTrain.rkP = 275;
   driveTrain.rkI = driveTrain.lkI;
   driveTrain.rkD = driveTrain.lkD; 
   
@@ -60,12 +73,17 @@ void autonomous() {
    pros::delay(250);
     pros::c::adi_encoder_reset(enc);
     	pros::c::imu_set_heading(12, 180);
-  Task task(ppint);
-  // simple circle drive  
-  driveTrain.position[0] = 70;
-  driveTrain.position[1] = 70;
-  driveTrain.heading = 180;
 
+
+   // driveTrain.goForwardM(-48, -400);
+   //Task task(ppint);
+  // simple circle drive  
+/*  driveTrain.position[0] = 70;
+  driveTrain.position[1] = 70;
+  driveTrain.heading = 180; */
+Task leftSideTask(leftSide); // PIDs 
+Task rightSideTask(rightSide);
+/*
   driveTrain.pursuitPoints.push_back({84,84,320});
   driveTrain.pursuitPoints.push_back({96,84,320});
   driveTrain.pursuitPoints.push_back({108,70,320});
@@ -74,7 +92,7 @@ void autonomous() {
   driveTrain.pursuitPoints.push_back({84,46,320});
   driveTrain.pursuitPoints.push_back({70,58,320});
   driveTrain.pursuitPoints.push_back({70,70,320});
-
+*/
  //   driveTrain.goForward(-48);
 
   //                                        AUTONOMOUS SKILLS

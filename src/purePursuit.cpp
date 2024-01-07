@@ -59,20 +59,20 @@ bool BasicChassis::trackingCheck(double x1, double x2, double y1, double y2) { /
 
 void BasicChassis::leftSide(double velocity) {
     double lastError = 0;
-    double error = velocity * 1.666666667 / 3 - pros::c::motor_get_actual_velocity(motorPortLeft[0]); 
+    double error = 0; 
     double integral = 0;
     double derivative = 0; 
     int intError = sgn(error);
 
     while (true) {
 
-        error = velocity * 1.666666667 / 3 - pros::c::motor_get_actual_velocity(motorPortLeft[0]); 
+        error = (velocity) - pros::c::motor_get_actual_velocity(motorPortLeft[0]); 
         integral = integral + error;
         derivative = error - lastError;
-        double output = lkP*error + lkI*integral + lkD*derivative + sgn(error)*lkS + lkV* (pros::c::motor_get_actual_velocity(motorPortLeft[0]) * 1.666666667 / 3 ); 
-        for (int i = 0; i < std::size(motorPortLeft); ++i) {
-            pros::c::motor_move_voltage(motorPortLeft[i],output * -1);
-        }
+        double output = (lkP*error + lkI*integral + lkD*derivative + sgn(error)*lkS + lkV* (pros::c::motor_get_actual_velocity(motorPortLeft[0]) * 1.666666667 / 3 )); 
+            pros::c::motor_move_voltage(motorPortLeft[0],output *-1 );
+            pros::c::motor_move_voltage(motorPortLeft[1],output *-1 );
+            pros::c::motor_move_voltage(motorPortLeft[2],output *-1);
         if (sgn(error) != intError) {
             integral = 0;
             intError = sgn(error);
@@ -84,19 +84,19 @@ void BasicChassis::leftSide(double velocity) {
 }
 void BasicChassis::rightSide(double velocity) {
     double lastError = 0;
-    double error = velocity * 1.666666667 / 3 - pros::c::motor_get_actual_velocity(motorPortRight[0]); 
+    double error = velocity - pros::c::motor_get_actual_velocity(motorPortRight[0]); 
     double integral = 0;
     double derivative = 0; 
     int intError = sgn(error);
     while (true) {
 
-        error = velocity * 1.666666667 / 3 - pros::c::motor_get_actual_velocity(motorPortRight[0]); 
+        error = (velocity) - pros::c::motor_get_actual_velocity(motorPortRight[0]); 
         integral = integral + error;
         derivative = error - lastError;
-        double output = rkP*error + rkI*integral + rkD*derivative + sgn(error)*rkS + rkV* (pros::c::motor_get_actual_velocity(motorPortRight[0]) * 1.666666667 / 3 ); 
-        for (int i = 0; i < std::size(motorPortRight); ++i) {
-            pros::c::motor_move_voltage(motorPortRight[i],output * -1);
-        }
+        double output = (rkP*error + rkI*integral + rkD*derivative + sgn(error)*rkS + rkV* (pros::c::motor_get_actual_velocity(motorPortRight[0]) * 1.666666667 / 3 )); 
+            pros::c::motor_move_voltage(motorPortRight[0],output*-1);
+            pros::c::motor_move_voltage(motorPortRight[1],output*-1);
+            pros::c::motor_move_voltage(motorPortRight[2],output*-1);
         if (sgn(error) != intError) {
             integral = 0;
             intError = sgn(error);
@@ -112,12 +112,12 @@ void BasicChassis::PurePursuitThread() { // pure pursuit should work :D
     double correctionVelocity = vC* atan2(pursuitPoints[lastPointIndex + 1][1] - position[1],pursuitPoints[lastPointIndex + 1][0] - position[0]); // correctional velocity 
 
     if (trackingCheck(pursuitPoints[lastPointIndex][0], pursuitPoints[lastPointIndex + 1][0], pursuitPoints[lastPointIndex][1], pursuitPoints[lastPointIndex + 1][1])) {
-        leftVelocity = pursuitPoints[lastPointIndex + 1][2] + correctionVelocity;
-        rightVelocity = pursuitPoints[lastPointIndex + 1][2] - correctionVelocity;
+        leftVelocity = pursuitPoints[lastPointIndex + 1][2] + 0.25*correctionVelocity;
+        rightVelocity = pursuitPoints[lastPointIndex + 1][2] - 0.25*correctionVelocity;
     }
     else { 
-        leftVelocity = 0.5 *pursuitPoints[lastPointIndex + 1][2] + 2*correctionVelocity;
-        rightVelocity = 0.5 * pursuitPoints[lastPointIndex + 1][2] - 2*correctionVelocity;
+        leftVelocity = 0.5 *pursuitPoints[lastPointIndex + 1][2] + correctionVelocity;
+        rightVelocity = 0.5 * pursuitPoints[lastPointIndex + 1][2] - correctionVelocity;
     }
 
     double distToNextPoint = sqrt(pow(pursuitPoints[lastPointIndex + 1][0] - position[0],2) + pow(pursuitPoints[lastPointIndex + 1][1] - position[0],2));
