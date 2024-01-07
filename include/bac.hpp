@@ -50,6 +50,7 @@
             double leftVelocity;
         void rightSide(double velocity); 
             double rightVelocity;
+        void pursuitChassisControler (); // combined left and right side controller with two diffrent values to minimize threads
         bool fail; // failsafe for calibrator 
         char IMUPort; 
         char top; // uhhh don't use

@@ -88,8 +88,8 @@ void BasicChassis::OdometryThread() {
      pros::lcd::print(1, "Y: %f", position[1]);
      pros::lcd::print(2, "Head: %d\n", int(radDeg(heading)));
  //    pros::lcd::print(3,"kms: %f", distanceOffset);
- //    pros::lcd::print(4,"z: %f", position[0]);
- //    pros::lcd::print(5,"j: %f", position[1]);
+    pros::lcd::print(4,"z: %f", position[0]);
+     pros::lcd::print(5,"j: %f", position[1]);
     
     }
 }

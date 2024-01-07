@@ -32,7 +32,11 @@ void rightSide() {
 
   //driveTrain.rightSide(0);
 }
+void PursuitControl () {
+  driveTrain.pursuitChassisControler();
+}
 void autonomous() {
+  	driveTrain.PursuitKill = 0;
   Task myTask5(controllerDisplay);
  // driveTrain.tkS = 2000; 
   driveTrain.tkP = 115; // 115
@@ -61,32 +65,12 @@ void autonomous() {
   driveTrain.aC = .25;
   driveTrain.pC = .15; 
   driveTrain.lookAheadRadius = 6; // radius rembmer 
-  /* PID testing logs
 
-
-   */
-   
-   //driveTrain.turn(360,360);
 	 pros::Motor intakeMotor(intakeMotor_PORT); 
    pros::ADIDigitalOut flapLeft ({{expander_PORT,EXT_flapLeft_PORT}});
    pros::ADIDigitalOut flapRight ({{expander_PORT,EXT_flapRight_PORT}});
-
-  
-
-    pros::c::adi_encoder_t enc = pros::c::adi_encoder_init(7,8,false);
-   pros::delay(250);
-    pros::c::adi_encoder_reset(enc);
-    //	pros::c::imu_set_heading(12, 180);
-
-
-   // driveTrain.goForwardM(-48, -400);
    Task pursuitTask(ppint);
-  // simple circle drive  
-/*  driveTrain.position[0] = 70;
-  driveTrain.position[1] = 70;
-  driveTrain.heading = 180; */
-Task leftSideTask(leftSide); // PIDs 
-Task rightSideTask(rightSide);
+   Task PursuitControlTask(PursuitControl);
   driveTrain.pursuitPoints.push_back({90,90,0});
   driveTrain.pursuitPoints.push_back({114,90,0});
   while (driveTrain.lastPointIndex != 1) {
@@ -94,16 +78,6 @@ Task rightSideTask(rightSide);
   }
     driveTrain.PursuitKill = 1;
 
-/*
-  driveTrain.pursuitPoints.push_back({84,84,320});
-  driveTrain.pursuitPoints.push_back({96,84,320});
-  driveTrain.pursuitPoints.push_back({108,70,320});
-  driveTrain.pursuitPoints.push_back({108,58,320});
-  driveTrain.pursuitPoints.push_back({96,46,320});
-  driveTrain.pursuitPoints.push_back({84,46,320});
-  driveTrain.pursuitPoints.push_back({70,58,320});
-  driveTrain.pursuitPoints.push_back({70,70,320});
-*/
  //   driveTrain.goForward(-48);
 
   //                                        AUTONOMOUS SKILLS

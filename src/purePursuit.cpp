@@ -112,6 +112,36 @@ void BasicChassis::rightSide(double velocity) {
     }
     
 }
+void BasicChassis::pursuitChassisControler() {
+    double LlastError = 0;
+    double Lerror = leftVelocity - pros::c::motor_get_actual_velocity(motorPortRight[0]); 
+    double Lintegral = 0;
+    double Lderivative = 0; 
+    int LintError = sgn(error);
+    double RlastError = 0;
+    double Rerror = rightVelocity - pros::c::motor_get_actual_velocity(motorPortRight[0]); 
+    double Rintegral = 0;
+    double Rderivative = 0; 
+    int RintError = sgn(error);
+     while (true) {
+
+        Rerror = (rightVelocity) - pros::c::motor_get_actual_velocity(motorPortRight[0]); 
+        Rintegral = Rintegral + error;
+        Rderivative = Rerror - RlastError;
+        double Routput = (rkP*error + rkI*Rintegral + rkD*Rderivative + sgn(Rerror)*rkS + rkV* (pros::c::motor_get_actual_velocity(motorPortRight[0]) * 1.666666667 / 3 )); 
+            pros::c::motor_move_voltage(motorPortRight[0],Routput*-1);
+            pros::c::motor_move_voltage(motorPortRight[1],Routput*-1);
+            pros::c::motor_move_voltage(motorPortRight[2],Routput*-1);
+        if (sgn(error) != RintError) {
+            Rintegral = 0;
+            RintError = sgn(error);
+        }
+        pros::delay(10);
+        if(PursuitKill == 1) {
+            break;
+        }
+    }
+}
 
 void BasicChassis::PurePursuitThread() { // pure pursuit should work :D
     lastPointIndex = 0;

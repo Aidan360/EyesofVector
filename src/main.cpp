@@ -22,6 +22,7 @@
 	pros::ADIDigitalOut blocker (blocker_PORT);
 void disabled() {
 	globalRPM = 0;
+	driveTrain.PursuitKill = 1;
 //	driveTrain.leftVelocity = 0;
 //	driveTrain.rightVelocity = 0;
 }
