@@ -1,7 +1,9 @@
 #include "bac.hpp"
+#include "pros/imu.h"
 #include "pros/motors.h"
 #include "pros/rtos.hpp"
 #include <cmath>
+#include "initialize.hpp"
 double degRad(double x) {
     return (x * (M_PI/180));
 }
@@ -16,19 +18,22 @@ void BasicChassis::OdometryThread() {
              pros::c::motor_tare_position(motorPortLeft[i]);
              pros::c::motor_tare_position(motorPortRight[i]);
         }
+        pros::c::imu_tare(IMU_PORT);
+        pros::delay(500);
     	pros::Controller master(pros::E_CONTROLLER_MASTER);
           master.clear();
-        float motorLeftAvg = 0;
-        float motorRightAvg = 0;
-        float distanceOffset = 0;
-        float deltaLeft = 0;
-        float deltaRight = 0;
-        float distLeft = 0;
-        float distRight = 0;
-        float newHeading = 0;
-        float orientationAvg = 0;
+        double motorLeftAvg = 0;
+        double motorRightAvg = 0;
+        double distanceOffset = 0;
+        double deltaLeft = 0;
+        double deltaRight = 0;
+        double distLeft = 0;
+        double distRight = 0;
+        double newHeading = 0;
+        double orientationAvg = 0;
         double cartToPolarR = 0;  
         double cartToPolarθ = 0;
+        double deltaAngle = 0;
     while (true) { // ONLY INITIALIZE AS THREAD, NEVER FUNCTION
 
   /*      for (int i = 0; i < std::size(motorPortLeft); ++i) {
@@ -42,9 +47,10 @@ void BasicChassis::OdometryThread() {
         distLeft = degRad(deltaLeft) * (wheelSize/2);
         distRight = degRad(deltaRight) * (wheelSize/2);  
 
-        heading = heading + ((distLeft - distRight)/trackLength); 
-        float deltaAngle = heading - lastHeading;
-        if(deltaAngle < 0.01) {
+        //heading = heading + ((distLeft - distRight)/trackLength); 
+        heading = pros::c::imu_get_heading(IMU_PORT);
+        deltaAngle = heading - lastHeading;
+        if(deltaAngle) {
             if (distRight == 0) { 
             distanceOffset = distRight;
             }
@@ -55,19 +61,15 @@ void BasicChassis::OdometryThread() {
         else {
 
             if (distRight == 0) { 
-            distanceOffset = distanceOffset = 2*sin(heading/2) * (distRight/deltaAngle + (trackLength/2)); // this is the distance travelled, it will be added to "distance" which is purely a PID variable that does not matter whatsoever. 
-
-;
+                distanceOffset = 2*sin(heading/2) * (distRight/deltaAngle + (trackLength/2)); // this is the distance travelled, it will be added to "distance" which is purely a PID variable that does not matter whatsoever. 
             }
             else {
-                distanceOffset = distanceOffset = 2*sin(heading/2) * (distLeft/deltaAngle + (trackLength/2)); // this is the distance travelled, it will be added to "distance" which is purely a PID variable that does not matter whatsoever. 
-
-;
+                distanceOffset = 2*sin(heading/2) * (distLeft/deltaAngle + (trackLength/2)); // this is the distance travelled, it will be added to "distance" which is purely a PID variable that does not matter whatsoever. 
             }    
-                }
+        }
         orientationAvg = lastHeading + deltaAngle/2;
-        cartToPolarR = sqrt(distanceOffset);  
-        cartToPolarθ = atan(distanceOffset); 
+        cartToPolarR = distanceOffset;  
+        cartToPolarθ = 0; 
         position[0] = cartToPolarR*cos(cartToPolarθ-orientationAvg)+position[0];
         position[1] = cartToPolarR*sin(cartToPolarθ-orientationAvg)+position[1];
 
