@@ -11,7 +11,7 @@
 #define flyWheelMotor_PORT 8 // Torque?? 
 #define expander_PORT 11 // extender for other sensors
 #define vision_PORT 12 // vision sensor, may add another.
-#define IMU_PORT 10 // Port for Temporary IMU 
+#define IMU_PORT 11 // Port for Temporary IMU 
 
 
  // 3 wire ports 
