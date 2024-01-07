@@ -18,15 +18,17 @@ void BasicChassis::OdometryThread() {
         }
     	pros::Controller master(pros::E_CONTROLLER_MASTER);
           master.clear();
-        double motorLeftAvg = 0;
-        double motorRightAvg = 0;
-         double distanceOffset = 0;
-        double deltaLeft = 0;
-        double deltaRight = 0;
-        double distLeft = 0;
-        double distRight = 0;
-        double newHeading = 0;
-        double orientationAvg = 0;
+        float motorLeftAvg = 0;
+        float motorRightAvg = 0;
+        float distanceOffset = 0;
+        float deltaLeft = 0;
+        float deltaRight = 0;
+        float distLeft = 0;
+        float distRight = 0;
+        float newHeading = 0;
+        float orientationAvg = 0;
+        double cartToPolarR = 0;  
+        double cartToPolarθ = 0;
     while (true) { // ONLY INITIALIZE AS THREAD, NEVER FUNCTION
 
   /*      for (int i = 0; i < std::size(motorPortLeft); ++i) {
@@ -40,25 +42,36 @@ void BasicChassis::OdometryThread() {
         distLeft = degRad(deltaLeft) * (wheelSize/2);
         distRight = degRad(deltaRight) * (wheelSize/2);  
 
-        heading = heading + ((deltaLeft - deltaRight)/trackLength); 
+        heading = heading + ((distLeft - distRight)/trackLength); 
         float deltaAngle = heading - lastHeading;
-        if(deltaAngle == 0) {
+        if(deltaAngle < 0.01) {
+            if (distRight == 0) { 
             distanceOffset = distRight;
+            }
+            else {
+                distanceOffset = distLeft;
+            }
         }
         else {
-        distanceOffset = 2*sin(heading/2) * (motorRightAvg/deltaAngle + trackLength/2); // this is the distance travelled, it will be added to "distance" which is purely a PID variable that does not matter whatsoever. 
 
-        }
+            if (distRight == 0) { 
+            distanceOffset = distanceOffset = 2*sin(heading/2) * (distRight/deltaAngle + (trackLength/2)); // this is the distance travelled, it will be added to "distance" which is purely a PID variable that does not matter whatsoever. 
+
+;
+            }
+            else {
+                distanceOffset = distanceOffset = 2*sin(heading/2) * (distLeft/deltaAngle + (trackLength/2)); // this is the distance travelled, it will be added to "distance" which is purely a PID variable that does not matter whatsoever. 
+
+;
+            }    
+                }
         orientationAvg = lastHeading + deltaAngle/2;
-        double cartToPolarR = sqrt(distanceOffset);  
-        double cartToPolarθ = atan(distanceOffset/0); 
+        cartToPolarR = sqrt(distanceOffset);  
+        cartToPolarθ = atan(distanceOffset); 
         position[0] = cartToPolarR*cos(cartToPolarθ-orientationAvg)+position[0];
         position[1] = cartToPolarR*sin(cartToPolarθ-orientationAvg)+position[1];
 
-        velocity[0] = position[0] - lastPosition[0]; 
-        velocity[1] = position[1] - lastPosition[1];
-        velocity[2] = distance - (distance - distanceOffset);
-
+        
         lastPosition[0] = position[0]; 
         lastPosition[1] = position[1];
         lastPosition[2] = motorLeftAvg;
@@ -68,9 +81,10 @@ void BasicChassis::OdometryThread() {
         pros::delay(10);   
         // DEBUG FUNCTIONS
     
-     pros::lcd::print(0, "X: %d\n", int(position[0]));
-     pros::lcd::print(1, "Y: %d\n", int(position[1]));
+     pros::lcd::print(0, "X: %f",  cartToPolarR*cos(cartToPolarθ-orientationAvg)+position[0]);
+     pros::lcd::print(1, "Y: %f",  cartToPolarR*sin(cartToPolarθ-orientationAvg)+position[1]);
      pros::lcd::print(2, "Head: %d\n", int(radDeg(heading)));
+     pros::lcd::print(3,"kms: %f", distanceOffset);
     
     }
 }
