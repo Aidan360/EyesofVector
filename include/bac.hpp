@@ -41,7 +41,10 @@
         double rkP; 
         double rkI; 
         double rkD; 
+        double pC; // passive correction variable
+        double aC; // actice correction variable 
         double vC; // correctional velocity variable 
+        double distToNextPoint;
         int lastPointIndex;
         void leftSide(double velocity);  
             double leftVelocity;

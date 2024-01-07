@@ -18,8 +18,8 @@ void BasicChassis::OdometryThread() {
              pros::c::motor_tare_position(motorPortLeft[i]);
              pros::c::motor_tare_position(motorPortRight[i]);
         }
-        pros::c::imu_tare(IMU_PORT);
-        pros::delay(500);
+        //pros::c::imu_tare(11);
+        //pros::delay(500);
     	pros::Controller master(pros::E_CONTROLLER_MASTER);
           master.clear();
         double motorLeftAvg = 0;
@@ -34,23 +34,24 @@ void BasicChassis::OdometryThread() {
         double cartToPolarR = 0;  
         double cartToPolarθ = 0;
         double deltaAngle = 0;
+        double gearRatio = 0.6;
     while (true) { // ONLY INITIALIZE AS THREAD, NEVER FUNCTION
 
   /*      for (int i = 0; i < std::size(motorPortLeft); ++i) {
             motorLeftAvg = motorLeftAvg + pros::c::motor_get_position(motorPortLeft[i]);
             motorRightAvg = motorRightAvg + pros::c::motor_get_position(motorPortRight[i]);
         } */
-        motorLeftAvg = -1* pros::c::motor_get_position(motorPortLeft[1]);
-        motorRightAvg = -1* pros::c::motor_get_position(motorPortRight[1]);
+        motorLeftAvg = -1* pros::c::motor_get_position(motorPortLeft[1])*gearRatio;
+        motorRightAvg = -1* pros::c::motor_get_position(motorPortRight[1])*gearRatio;
         deltaLeft = (motorLeftAvg - lastPosition[2]);
         deltaRight = (motorRightAvg - lastPosition[3]);
         distLeft = degRad(deltaLeft) * (wheelSize/2);
         distRight = degRad(deltaRight) * (wheelSize/2);  
 
-        //heading = heading + ((distLeft - distRight)/trackLength); 
-        heading = pros::c::imu_get_heading(IMU_PORT);
+        heading = heading + ((distLeft - distRight)/trackLength); 
+      //  heading = pros::c::imu_get_heading(11);
         deltaAngle = heading - lastHeading;
-        if(deltaAngle) {
+        if(deltaAngle < 0.1) {
             if (distRight == 0) { 
             distanceOffset = distRight;
             }
@@ -83,10 +84,12 @@ void BasicChassis::OdometryThread() {
         pros::delay(10);   
         // DEBUG FUNCTIONS
     
-     pros::lcd::print(0, "X: %f",  cartToPolarR*cos(cartToPolarθ-orientationAvg)+position[0]);
-     pros::lcd::print(1, "Y: %f",  cartToPolarR*sin(cartToPolarθ-orientationAvg)+position[1]);
+     pros::lcd::print(0, "X: %f", position[0]);
+     pros::lcd::print(1, "Y: %f", position[1]);
      pros::lcd::print(2, "Head: %d\n", int(radDeg(heading)));
-     pros::lcd::print(3,"kms: %f", distanceOffset);
+ //    pros::lcd::print(3,"kms: %f", distanceOffset);
+ //    pros::lcd::print(4,"z: %f", position[0]);
+ //    pros::lcd::print(5,"j: %f", position[1]);
     
     }
 }

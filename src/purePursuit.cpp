@@ -79,6 +79,9 @@ void BasicChassis::leftSide(double velocity) {
         }
         velocity = leftVelocity;
         pros::delay(10);
+        if(PursuitKill == 1) {
+            break;
+        }
 
     }
 }
@@ -103,27 +106,40 @@ void BasicChassis::rightSide(double velocity) {
         }
         velocity = rightVelocity;
         pros::delay(10);
-
+        if(PursuitKill == 1) {
+            break;
+        }
     }
+    
 }
 
 void BasicChassis::PurePursuitThread() { // pure pursuit should work :D
+    lastPointIndex = 0;
+    distToNextPoint =  sqrt(pow(pursuitPoints[lastPointIndex + 1][0] - position[0],2) + pow(pursuitPoints[lastPointIndex + 1][1] - position[0],2));
+;
     while (true){
-    double correctionVelocity = vC* atan2(pursuitPoints[lastPointIndex + 1][1] - position[1],pursuitPoints[lastPointIndex + 1][0] - position[0]); // correctional velocity 
+    //double correctionVelocity = vC* atan2(pursuitPoints[lastPointIndex + 1][1] - position[1],pursuitPoints[lastPointIndex + 1][0] - position[0]); // correctional velocity 
+    distToNextPoint = sqrt(pow(pursuitPoints[lastPointIndex + 1][0] - position[0],2) + pow(pursuitPoints[lastPointIndex + 1][1] - position[1],2));
 
+    if (distToNextPoint <= lookAheadRadius) {
+        lastPointIndex++;
+    } // moves the path onto the next point
+
+    if (std::size(pursuitPoints) <= lastPointIndex) {
+        PursuitKill = 0;
+    }
+    double correctionVelocity = 0;
     if (trackingCheck(pursuitPoints[lastPointIndex][0], pursuitPoints[lastPointIndex + 1][0], pursuitPoints[lastPointIndex][1], pursuitPoints[lastPointIndex + 1][1])) {
-        leftVelocity = pursuitPoints[lastPointIndex + 1][2] + 0.25*correctionVelocity;
-        rightVelocity = pursuitPoints[lastPointIndex + 1][2] - 0.25*correctionVelocity;
+        leftVelocity = pursuitPoints[lastPointIndex + 1][2] + pC*correctionVelocity; // pC = passive correction
+        rightVelocity = pursuitPoints[lastPointIndex + 1][2] - pC*correctionVelocity;
     }
     else { 
-        leftVelocity = 0.5 *pursuitPoints[lastPointIndex + 1][2] + correctionVelocity;
-        rightVelocity = 0.5 * pursuitPoints[lastPointIndex + 1][2] - correctionVelocity;
+        leftVelocity = aC *pursuitPoints[lastPointIndex + 1][2] + correctionVelocity; // aC = active correction.
+        rightVelocity = aC * pursuitPoints[lastPointIndex + 1][2] - correctionVelocity;
     }
-
-    double distToNextPoint = sqrt(pow(pursuitPoints[lastPointIndex + 1][0] - position[0],2) + pow(pursuitPoints[lastPointIndex + 1][1] - position[0],2));
-        if (distToNextPoint >= lookAheadRadius) {
-            lastPointIndex++;
-        } // moves the path onto the next point
+    
+    distToNextPoint = sqrt(pow(pursuitPoints[lastPointIndex + 1][0] - position[0],2) + pow(pursuitPoints[lastPointIndex + 1][1] - position[0],2));
+ // moves the path onto the next point
     }
     if (PursuitKill == 1) {
         leftVelocity = 0;

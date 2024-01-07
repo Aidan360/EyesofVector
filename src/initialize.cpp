@@ -34,8 +34,7 @@ void odometryTask() {
   driveTrain.motorPortRight.push_back(rightMiddleMotor_PORT);
   driveTrain.motorPortRight.push_back(rightBackMotor_PORT);
   driveTrain.wheelSize = 3.25;
-  driveTrain.trackLength = 12.8; // change when you actually get the robot  */
-   driveTrain.trackLength = 12.8;
+  driveTrain.trackLength = 13.7; // change when you actually get the robot  */
    driveTrain.position[0] = 90;
    driveTrain.position[1] = 90;
    driveTrain.heading = 0;
@@ -80,12 +79,12 @@ void initialize() {
     pros::IMU inertia (IMU_PORT);
     
     
-    pros::c::imu_reset_blocking(IMU_PORT);
-    pros::c::imu_set_heading(IMU_PORT,5);
-    pros::c::imu_set_rotation(IMU_PORT, 5);
+  //  pros::c::imu_reset_blocking(IMU_PORT);
+  //  pros::c::imu_set_heading(IMU_PORT,5);
+  //  pros::c::imu_set_rotation(IMU_PORT, 5);
   
-   Task my_task(flyWheelTask);
-   Task my_task2(odometryTask);
+   //Task my_task(flyWheelTask);
+   Task odomTask(odometryTask);
    driveTrain.position[0] = 90;
    driveTrain.position[1] = 90;
    

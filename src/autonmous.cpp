@@ -6,8 +6,9 @@
 #include "pros/misc.h"
 #include "pros/rtos.h"
 BasicChassis driveTrain; 
+
 void ppint() {
- // driveTrain.PurePursuitThread();
+ driveTrain.PurePursuitThread();
 }
 void controllerDisplay() {
   	pros::Controller master(pros::E_CONTROLLER_MASTER);
@@ -18,19 +19,20 @@ void controllerDisplay() {
     c::delay(100);
     master.print(1, 2, "R: %d\n", int(pros::c::motor_get_actual_velocity(driveTrain.motorPortRight[0])));
     c::delay(100);
+    master.print(2,1, "LPI %d\n", int(driveTrain.lastPointIndex));
+    c::delay(100);
+    
   }
 }
 void leftSide() { // testing function for now. 
-  driveTrain.leftVelocity = 400;
-//  driveTrain.leftSide(400);
+//  driveTrain.leftSide(0);
 
 }
 void rightSide() {
-  driveTrain.rightVelocity = -400;
-//  driveTrain.rightSide(-400);
+
+  //driveTrain.rightSide(0);
 }
 void autonomous() {
-  	 pros::lcd::print(1,"count");
   Task myTask5(controllerDisplay);
  // driveTrain.tkS = 2000; 
   driveTrain.tkP = 115; // 115
@@ -56,7 +58,9 @@ void autonomous() {
   driveTrain.rkD = driveTrain.lkD; 
   
   driveTrain.vC = 1; 
-  driveTrain.lookAheadRadius = 18;
+  driveTrain.aC = .25;
+  driveTrain.pC = .15; 
+  driveTrain.lookAheadRadius = 6; // radius rembmer 
   /* PID testing logs
 
 
@@ -72,17 +76,24 @@ void autonomous() {
     pros::c::adi_encoder_t enc = pros::c::adi_encoder_init(7,8,false);
    pros::delay(250);
     pros::c::adi_encoder_reset(enc);
-    	pros::c::imu_set_heading(12, 180);
+    //	pros::c::imu_set_heading(12, 180);
 
 
    // driveTrain.goForwardM(-48, -400);
-   //Task task(ppint);
+   Task pursuitTask(ppint);
   // simple circle drive  
 /*  driveTrain.position[0] = 70;
   driveTrain.position[1] = 70;
   driveTrain.heading = 180; */
 Task leftSideTask(leftSide); // PIDs 
 Task rightSideTask(rightSide);
+  driveTrain.pursuitPoints.push_back({90,90,0});
+  driveTrain.pursuitPoints.push_back({114,90,0});
+  while (driveTrain.lastPointIndex != 1) {
+    delay(10);
+  }
+    driveTrain.PursuitKill = 1;
+
 /*
   driveTrain.pursuitPoints.push_back({84,84,320});
   driveTrain.pursuitPoints.push_back({96,84,320});
