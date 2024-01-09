@@ -16,7 +16,7 @@ double abso(double x) {
     }
 } 
 double pi = 3.1415926535897932384;
-double radi = 1.375;
+double radi = 3.75/2;
 double sgn(double x) { 
     if (abso(x) == 0) {
         return(0);
@@ -31,25 +31,28 @@ double sgn(double x) {
 void BasicChassis::goForward(double inch) {
     pros::c::adi_encoder_t enc = pros::c::adi_encoder_init(8,7,true);
     
-    error = (inch/(radi*pi))*360/2  - pros::c::adi_encoder_get(enc);
+    error = (inch/(radi*pi))*360/2  - (pros::c::motor_get_position(motorPortLeft[0]) + pros::c::motor_get_position(motorPortRight[0])) * 0.5 * 0.6 * -1;
     double lastError = 0;
     integral = 0;
     double count = 0;
     double counter = 50; 
     fail = false;
     int interror = sgn(error);
-    error = (inch/(radi*pi))*360/2 - pros::c::adi_encoder_get(enc);  
+    error = (inch/(radi*pi))*360/2  - (pros::c::motor_get_position(motorPortLeft[0]) + pros::c::motor_get_position(motorPortRight[0])) * 0.5 * 0.6 * -1; 
     while (abs(error) > 10.41741446) { 
-    error = (inch/(radi*pi))*360/2  - pros::c::adi_encoder_get(enc);  
+    error = (inch/(radi*pi))*360/2  - (pros::c::motor_get_position(motorPortLeft[0]) + pros::c::motor_get_position(motorPortRight[0])) * 0.5 * 0.6 * -1; 
+ 
 //    pros::lcd::print(0, "Obama %d\n", (pros::c::adi_encoder_get(enc) * 3.25 / 360));
     pros::lcd::print(0, "Odom Value: %d\n",int((error/360)*pi*radi*100));
     integral = integral + error; 
     derivative = error - lastError;
     double output = fkP*error + fkI*integral + fkD*derivative + sgn(error)*fkS ; 
-    for (int i = 0; i < std::size(motorPortLeft); ++i) {
-        pros::c::motor_move_voltage(motorPortLeft[i],output * -1);
-        pros::c::motor_move_voltage(motorPortRight[i],output * -1);
-    }
+    pros::c::motor_move_voltage(motorPortLeft[0],output *-1 );
+    pros::c::motor_move_voltage(motorPortLeft[1],output *-1 );
+    pros::c::motor_move_voltage(motorPortLeft[2],output *-1 );
+    pros::c::motor_move_voltage(motorPortRight[0],output *-1);
+    pros::c::motor_move_voltage(motorPortRight[1],output *-1);
+    pros::c::motor_move_voltage(motorPortRight[2],output *-1);
     lastError = error; 
     if (int(pros::c::motor_get_actual_velocity(motorPortLeft[1])) == 0) {
         count = count + 1;
@@ -67,7 +70,7 @@ void BasicChassis::goForward(double inch) {
     pros::delay(10);
     }  
         // pros::c::adi_encoder_reset(enc);
-        pros::lcd::print(1, "done %d", int((error * 2.75 / 360)*2*10)); 
+        pros::lcd::print(1, "done %d", int((error * 3.25 / 360)*2*10)); 
 
 }
 void BasicChassis::goForwardM(double distance, double velocity) { // Horizontal 
@@ -126,26 +129,27 @@ void BasicChassis::goForwardM(double distance, double velocity) { // Horizontal
         pros::c::motor_move_relative(motorPortRight[i],rotationDegrees,velocity*velVol);
     } */
 void BasicChassis::turn(double degree) {
-    error = degree - pros::c::imu_get_heading(12);
-    int intError = sgn(error);
+    //error = degree - pros::c::imu_get_heading(11);
+  
     fail = false;
     double lastError = 0;
     double output;
     integral = 0;
     double count = 0;
     double counter = 10; 
-    while ((abso(error) > 0.25)) { 
-    error = degree - pros::c::imu_get_heading(12);  
-    pros::lcd::print(0, "Heading %f", pros::c::imu_get_heading(12));
-    pros::lcd::print(3,"count %f", count);
-    integral = integral + error; 
-    derivative = error - lastError;
-    output = tkP*error + tkI*integral + tkD*derivative + sgn(error)*tkS; 
+   double jError = 1;
+      int intError = sgn(jError);
+    while ((abso(jError) > 0.25)) { 
+    //jError = degree - pros::c::imu_get_heading(11);  
+    //pros::lcd::print(0, "Heading %f", pros::c::imu_get_heading(11));
+    //pros::lcd::print(3,"count %f", count);
+    integral = integral + jError; 
+    derivative = jError - lastError;
+    output = tkP*jError + tkI*integral + tkD*derivative + sgn(jError)*tkS; 
     for (int i = 0; i < std::size(motorPortLeft); ++i) {
         pros::c::motor_move_voltage(motorPortLeft[i],-output);
         pros::c::motor_move_voltage(motorPortRight[i],output);
-    }
-
+    } 
     if (int(pros::c::motor_get_actual_velocity(motorPortLeft[1])) == 0) {
         count = count + 1;
     }
@@ -156,10 +160,11 @@ void BasicChassis::turn(double degree) {
         fail = true;
         break;
     }  
-    if (sgn(error) != intError) {
+    if (sgn(jError) != intError) {
         integral = 0;
-        intError = sgn(error);
+        intError = sgn(jError);
     }
+    lastError = jError;
     pros::delay(10);
     }  
 

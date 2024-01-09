@@ -79,12 +79,12 @@ void initialize() {
     pros::IMU inertia (IMU_PORT);
     
     
-  //  pros::c::imu_reset_blocking(IMU_PORT);
+    pros::c::imu_reset_blocking(IMU_PORT);
   //  pros::c::imu_set_heading(IMU_PORT,5);
   //  pros::c::imu_set_rotation(IMU_PORT, 5);
   
    //Task my_task(flyWheelTask);
-   Task odomTask(odometryTask);
+   //Task odomTask(odometryTask);
    driveTrain.position[0] = 90;
    driveTrain.position[1] = 90;
    

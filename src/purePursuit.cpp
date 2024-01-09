@@ -117,62 +117,108 @@ void BasicChassis::pursuitChassisControler() {
     double Lerror = leftVelocity - pros::c::motor_get_actual_velocity(motorPortRight[0]); 
     double Lintegral = 0;
     double Lderivative = 0; 
-    int LintError = sgn(error);
+    int LintError = sgn(Lerror);
     double RlastError = 0;
     double Rerror = rightVelocity - pros::c::motor_get_actual_velocity(motorPortRight[0]); 
     double Rintegral = 0;
     double Rderivative = 0; 
-    int RintError = sgn(error);
+    int RintError = sgn(Rerror);
      while (true) {
-
+        Lerror = (leftVelocity) - pros::c::motor_get_actual_velocity(motorPortLeft[0]); 
+        Lintegral = Lintegral + Lerror;
+        Lderivative = Lerror - LlastError;
+        double Loutput = (lkP*Lerror + lkI*Lintegral + lkD*Lderivative + sgn(Lerror)*lkS + lkV* (pros::c::motor_get_actual_velocity(motorPortLeft[0]) * 1.666666667 / 3 )); 
+            pros::c::motor_move_voltage(motorPortLeft[0],Loutput *-1 );
+            pros::c::motor_move_voltage(motorPortLeft[1],Loutput *-1 );
+            pros::c::motor_move_voltage(motorPortLeft[2],Loutput *-1);
+        if (sgn(Lerror) != LintError) {
+            Lintegral = 0;
+            LintError = sgn(Lerror);
+        }
         Rerror = (rightVelocity) - pros::c::motor_get_actual_velocity(motorPortRight[0]); 
-        Rintegral = Rintegral + error;
+        Rintegral = Rintegral + Rerror;
         Rderivative = Rerror - RlastError;
-        double Routput = (rkP*error + rkI*Rintegral + rkD*Rderivative + sgn(Rerror)*rkS + rkV* (pros::c::motor_get_actual_velocity(motorPortRight[0]) * 1.666666667 / 3 )); 
+        double Routput = (rkP*Rerror + rkI*Rintegral + rkD*Rderivative + sgn(Rerror)*rkS + rkV* (pros::c::motor_get_actual_velocity(motorPortRight[0]) * 1.666666667 / 3 )); 
             pros::c::motor_move_voltage(motorPortRight[0],Routput*-1);
             pros::c::motor_move_voltage(motorPortRight[1],Routput*-1);
             pros::c::motor_move_voltage(motorPortRight[2],Routput*-1);
-        if (sgn(error) != RintError) {
+        if (sgn(Rerror) != RintError) {
             Rintegral = 0;
-            RintError = sgn(error);
+            RintError = sgn(Rerror);
         }
+
         pros::delay(10);
-        if(PursuitKill == 1) {
-            break;
-        }
     }
 }
 
 void BasicChassis::PurePursuitThread() { // pure pursuit should work :D
     lastPointIndex = 0;
     distToNextPoint =  sqrt(pow(pursuitPoints[lastPointIndex + 1][0] - position[0],2) + pow(pursuitPoints[lastPointIndex + 1][1] - position[0],2));
-;
+    double LlastError = 0;
+    double Lerror = leftVelocity - pros::c::motor_get_actual_velocity(motorPortRight[0]); 
+    double Lintegral = 0;
+    double Lderivative = 0; 
+    int LintError = sgn(Lerror);
+    double RlastError = 0;
+    double Rerror = rightVelocity - pros::c::motor_get_actual_velocity(motorPortRight[0]); 
+    double Rintegral = 0;
+    double Rderivative = 0; 
+    int RintError = sgn(Rerror);
+    double correctionVelocity;
     while (true){
-    //double correctionVelocity = vC* atan2(pursuitPoints[lastPointIndex + 1][1] - position[1],pursuitPoints[lastPointIndex + 1][0] - position[0]); // correctional velocity 
+    correctionVelocity = vC* atan2(pursuitPoints[lastPointIndex + 1][1] - position[1],pursuitPoints[lastPointIndex + 1][0] - position[0]); // correctional velocity 
     distToNextPoint = sqrt(pow(pursuitPoints[lastPointIndex + 1][0] - position[0],2) + pow(pursuitPoints[lastPointIndex + 1][1] - position[1],2));
 
     if (distToNextPoint <= lookAheadRadius) {
         lastPointIndex++;
     } // moves the path onto the next point
 
-    if (std::size(pursuitPoints) <= lastPointIndex) {
-        PursuitKill = 0;
+    if ((std::size(pursuitPoints)-1) <= lastPointIndex) {
+        PursuitKill = 1;
     }
-    double correctionVelocity = 0;
-    if (trackingCheck(pursuitPoints[lastPointIndex][0], pursuitPoints[lastPointIndex + 1][0], pursuitPoints[lastPointIndex][1], pursuitPoints[lastPointIndex + 1][1])) {
-        leftVelocity = pursuitPoints[lastPointIndex + 1][2] + pC*correctionVelocity; // pC = passive correction
-        rightVelocity = pursuitPoints[lastPointIndex + 1][2] - pC*correctionVelocity;
+    if (trackingCheck(pursuitPoints[lastPointIndex][0], pursuitPoints[lastPointIndex + 1][0], pursuitPoints[lastPointIndex][1], pursuitPoints[lastPointIndex + 1][1]) == true) {
+        leftVelocity = pursuitPoints[lastPointIndex + 1][2]; // pC = passive correction
+        rightVelocity = pursuitPoints[lastPointIndex + 1][2];
     }
     else { 
-        leftVelocity = aC *pursuitPoints[lastPointIndex + 1][2] + correctionVelocity; // aC = active correction.
-        rightVelocity = aC * pursuitPoints[lastPointIndex + 1][2] - correctionVelocity;
+        leftVelocity = aC *pursuitPoints[lastPointIndex + 1][2] - correctionVelocity; // aC = active correction.
+        rightVelocity = aC * pursuitPoints[lastPointIndex + 1][2] + correctionVelocity;
     }
-    
+    if (PursuitKill == 0) {
+        Lerror = (leftVelocity) - pros::c::motor_get_actual_velocity(motorPortLeft[0]); 
+        Lintegral = Lintegral + Lerror;
+        Lderivative = Lerror - LlastError;
+        double Loutput = (lkP*Lerror + lkI*Lintegral + lkD*Lderivative + sgn(Lerror)*lkS + lkV* (pros::c::motor_get_actual_velocity(motorPortLeft[0]) * 1.666666667 / 3 )); 
+            pros::c::motor_move_voltage(motorPortLeft[0],Loutput *-1 );
+            pros::c::motor_move_voltage(motorPortLeft[1],Loutput *-1 );
+            pros::c::motor_move_voltage(motorPortLeft[2],Loutput *-1);
+        if (sgn(Lerror) != LintError) {
+            Lintegral = 0;
+            LintError = sgn(Lerror);
+        }
+        Rerror = (rightVelocity) - pros::c::motor_get_actual_velocity(motorPortRight[0]); 
+        Rintegral = Rintegral + Rerror;
+        Rderivative = Rerror - RlastError;
+        double Routput = (rkP*Rerror + rkI*Rintegral + rkD*Rderivative + sgn(Rerror)*rkS + rkV* (pros::c::motor_get_actual_velocity(motorPortRight[0]) * 1.666666667 / 3 )); 
+            pros::c::motor_move_voltage(motorPortRight[0],Routput*-1);
+            pros::c::motor_move_voltage(motorPortRight[1],Routput*-1);
+            pros::c::motor_move_voltage(motorPortRight[2],Routput*-1);
+        if (sgn(Rerror) != RintError) {
+            Rintegral = 0;
+            RintError = sgn(Rerror);
+        }
+    }
+    else  {
+        pros::c::motor_move_voltage(motorPortLeft[0],0);
+        pros::c::motor_move_voltage(motorPortLeft[1],0);
+        pros::c::motor_move_voltage(motorPortLeft[2],0);
+        pros::c::motor_move_voltage(motorPortRight[0],0);
+        pros::c::motor_move_voltage(motorPortRight[1],0);
+        pros::c::motor_move_voltage(motorPortRight[2],0);    
+        break;
+    }    
     distToNextPoint = sqrt(pow(pursuitPoints[lastPointIndex + 1][0] - position[0],2) + pow(pursuitPoints[lastPointIndex + 1][1] - position[0],2));
  // moves the path onto the next point
     }
-    if (PursuitKill == 1) {
-        leftVelocity = 0;
-        rightVelocity = 0;
-    }
+
 } 

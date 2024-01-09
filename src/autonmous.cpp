@@ -15,9 +15,9 @@ void controllerDisplay() {
   while (true) {
     master.clear();
     c::delay(100);
-    master.print(0, 1, "L: %d\n", int(pros::c::motor_get_actual_velocity(driveTrain.motorPortLeft[0])));
+    master.print(0, 1, "L: %f", sqrt(pow(driveTrain.pursuitPoints[driveTrain.lastPointIndex + 1][0] - driveTrain.position[0],2) + pow(driveTrain.pursuitPoints[driveTrain.lastPointIndex + 1][1] - driveTrain.position[1],2)));
     c::delay(100);
-    master.print(1, 2, "R: %d\n", int(pros::c::motor_get_actual_velocity(driveTrain.motorPortRight[0])));
+    master.print(1, 2, "R: %d\n",  driveTrain.PursuitKill);
     c::delay(100);
     master.print(2,1, "LPI %d\n", int(driveTrain.lastPointIndex));
     c::delay(100);
@@ -32,12 +32,12 @@ void rightSide() {
 
   //driveTrain.rightSide(0);
 }
-void PursuitControl () {
-  driveTrain.pursuitChassisControler();
-}
+
 void autonomous() {
+   // 	pros::Controller master(pros::E_CONTROLLER_MASTER);
+
   	driveTrain.PursuitKill = 0;
-  Task myTask5(controllerDisplay);
+//  Task myTask5(controllerDisplay);
  // driveTrain.tkS = 2000; 
   driveTrain.tkP = 115; // 115
   driveTrain.tkI = 0.0045; // 0.005
@@ -51,32 +51,36 @@ void autonomous() {
   // Random values I put in.
   driveTrain.lkS = 0;  // 2800
   driveTrain.lkV = 0;
-  driveTrain.lkP = 250;
-  driveTrain.lkI = 0;
-  driveTrain.lkD = 0;
+  driveTrain.lkP = 13; // 250
+  driveTrain.lkI = 0.000025;
+  driveTrain.lkD = 0.00005;
   
   driveTrain.rkS = 0; //2500
   driveTrain.rkV = driveTrain.lkV;
-  driveTrain.rkP = 275;
+  driveTrain.rkP = 13; // 275
   driveTrain.rkI = driveTrain.lkI;
   driveTrain.rkD = driveTrain.lkD; 
   
-  driveTrain.vC = 1; 
-  driveTrain.aC = .25;
-  driveTrain.pC = .15; 
-  driveTrain.lookAheadRadius = 6; // radius rembmer 
+  driveTrain.vC = 70; // 1 
+  driveTrain.aC = .75; // .25
+  driveTrain.pC = 0; // .15 
+  driveTrain.lookAheadRadius = 10; // radius rembmer 
 
 	 pros::Motor intakeMotor(intakeMotor_PORT); 
    pros::ADIDigitalOut flapLeft ({{expander_PORT,EXT_flapLeft_PORT}});
    pros::ADIDigitalOut flapRight ({{expander_PORT,EXT_flapRight_PORT}});
-   Task pursuitTask(ppint);
-   Task PursuitControlTask(PursuitControl);
-  driveTrain.pursuitPoints.push_back({90,90,0});
-  driveTrain.pursuitPoints.push_back({114,90,0});
-  while (driveTrain.lastPointIndex != 1) {
-    delay(10);
-  }
-    driveTrain.PursuitKill = 1;
+  // Task pursuitTask(ppint);
+  // Task PursuitControlTask(PursuitControl);
+  //driveTrain.pursuitPoints.push_back({90,90,200});
+  //driveTrain.pursuitPoints.push_back({96,88,200});
+  //driveTrain.pursuitPoints.push_back({100,76,200});
+  pros::c::imu_reset_blocking(11);
+  pros::c::imu_set_heading(11, 180);
+
+ 
+
+//  driveTrain.leftVelocity = 0;
+//  driveTrain.rightVelocity = 0;
 
  //   driveTrain.goForward(-48);
 
@@ -226,9 +230,9 @@ void autonomous() {
 
 
 //  autonomous1();
-/*
+
     driveTrain.turn(90);
-    pros::delay(250);
+  /*  pros::delay(250);
     driveTrain.turn(180);
     pros::delay(250);
     driveTrain.turn(270);
@@ -322,8 +326,8 @@ void autonomous() {
     driveTrain.turn(90);
     pros::delay(250);
     driveTrain.turn(5);
-    pros::delay(250); 
-
+    pros::delay(250); */
+/*
   driveTrain.goForward(24);
   pros::delay(250);
   driveTrain.goForward(-12);
@@ -341,7 +345,7 @@ void autonomous() {
   pros::delay(250);
   driveTrain.goForward(-24);
   pros::delay(250);
- */
+  */
 
 
 

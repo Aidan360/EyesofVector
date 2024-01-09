@@ -66,7 +66,7 @@
         int calibrator(float inputP, float inputI, float inputD, float inputS,bool type); 
         void OdometryThread();
         void PurePursuitThread();
-        int PursuitKill = 0;
+        int PursuitKill;
         bool trackingCheck(double x1, double x2, double y1, double y2);
         int totalPairs; // Total number of point pairs
         class pointPair { // object of point pairs and the decider for when to switch to the next point in the pure pursuit. 
