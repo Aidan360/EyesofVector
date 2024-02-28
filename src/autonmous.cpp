@@ -4,83 +4,476 @@
 #include "pros/adi.hpp"
 #include "pros/imu.h"
 #include "pros/misc.h"
-#include "pros/rtos.h"
 BasicChassis driveTrain; 
 
-void ppint() {
- driveTrain.PurePursuitThread();
+void intake (){  	pros::Motor leftUtilityMotor (leftUtilityMotor_PORT);
+	pros::Motor rightUtilityMotor (rightUtilityMotor_PORT);
+
+			leftUtilityMotor.move(-127);
+			rightUtilityMotor.move(127);
 }
-void controllerDisplay() {
-  	pros::Controller master(pros::E_CONTROLLER_MASTER);
-  while (true) {
-    master.clear();
-    c::delay(100);
-    master.print(0, 1, "L: %f", sqrt(pow(driveTrain.pursuitPoints[driveTrain.lastPointIndex + 1][0] - driveTrain.position[0],2) + pow(driveTrain.pursuitPoints[driveTrain.lastPointIndex + 1][1] - driveTrain.position[1],2)));
-    c::delay(100);
-    master.print(1, 2, "R: %d\n",  driveTrain.PursuitKill);
-    c::delay(100);
-    master.print(2,1, "LPI %d\n", int(driveTrain.lastPointIndex));
-    c::delay(100);
-    
-  }
+void outtake() {
+    	pros::Motor leftUtilityMotor (leftUtilityMotor_PORT);
+	pros::Motor rightUtilityMotor (rightUtilityMotor_PORT);
+			leftUtilityMotor.move(127*0.9);
+			rightUtilityMotor.move(-127*0.9);
 }
-void leftSide() { // testing function for now. 
-//  driveTrain.leftSide(0);
+void stoptake() {
+    	pros::Motor leftUtilityMotor (leftUtilityMotor_PORT);
+	pros::Motor rightUtilityMotor (rightUtilityMotor_PORT);
+			leftUtilityMotor.move(0);
+			rightUtilityMotor.move(0);
+}
+
+void turnCalibrator() {
+    driveTrain.turn(90);
+    pros::delay(250);
+    driveTrain.turn(180);
+    pros::delay(250);
+    driveTrain.turn(270);
+    pros::delay(250);
+    driveTrain.turn(180);
+    pros::delay(250);
+    driveTrain.turn(90);
+    pros::delay(250);
+    driveTrain.turn(5);
+    pros::delay(250); 
+    driveTrain.turn(90);
+    pros::delay(250);
+    driveTrain.turn(180);
+    pros::delay(250);
+    driveTrain.turn(270);
+    pros::delay(250);
+    driveTrain.turn(180);
+    pros::delay(250);
+    driveTrain.turn(90);
+    pros::delay(250);
+    driveTrain.turn(5);
+    pros::delay(250); 
+    driveTrain.turn(90);
+    pros::delay(250);
+    driveTrain.turn(180);
+    pros::delay(250);
+    driveTrain.turn(270);
+    pros::delay(250);
+    driveTrain.turn(180);
+    pros::delay(250);
+    driveTrain.turn(90);
+    pros::delay(250);
+    driveTrain.turn(5);
+    pros::delay(250); 
+    driveTrain.turn(90);
+    pros::delay(250);
+    driveTrain.turn(180);
+    pros::delay(250);
+    driveTrain.turn(270);
+    pros::delay(250);
+    driveTrain.turn(180);
+    pros::delay(250);
+    driveTrain.turn(90);
+    pros::delay(250);
+    driveTrain.turn(5);
+    pros::delay(250); 
+    driveTrain.turn(90);
+    pros::delay(250);
+    driveTrain.turn(180);
+    pros::delay(250);
+    driveTrain.turn(270);
+    pros::delay(250);
+    driveTrain.turn(180);
+    pros::delay(250);
+    driveTrain.turn(90);
+    pros::delay(250);
+    driveTrain.turn(5);
+    pros::delay(250); 
+    driveTrain.turn(90);
+    pros::delay(250);
+    driveTrain.turn(180);
+    pros::delay(250);
+    driveTrain.turn(270);
+    pros::delay(250);
+    driveTrain.turn(180);
+    pros::delay(250);
+    driveTrain.turn(90);
+    pros::delay(250);
+    driveTrain.turn(5);
+    pros::delay(250); 
+    driveTrain.turn(90);
+    pros::delay(250);
+    driveTrain.turn(180);
+    pros::delay(250);
+    driveTrain.turn(270);
+    pros::delay(250);
+    driveTrain.turn(180);
+    pros::delay(250);
+    driveTrain.turn(90);
+    pros::delay(250);
+    driveTrain.turn(5);
+    pros::delay(250); 
+    driveTrain.turn(90);
+    pros::delay(250);
+    driveTrain.turn(180);
+    pros::delay(250);
+    driveTrain.turn(270);
+    pros::delay(250);
+    driveTrain.turn(180);
+    pros::delay(250);
+    driveTrain.turn(90);
+    pros::delay(250);
+    driveTrain.turn(5);
+    pros::delay(250); 
+}
+void moveCalibrator() { 
+   driveTrain.goForward(24);
+  pros::delay(250);
+  driveTrain.goForward(-24);
+  pros::delay(250);
+  driveTrain.goForward(24);
+  pros::delay(250);
+  driveTrain.goForward(-24);
+  pros::delay(250);
+  driveTrain.goForward(24);
+  pros::delay(250);
+  driveTrain.goForward(-24);
+  pros::delay(250);
+  driveTrain.goForward(24);
+  pros::delay(250);
+  driveTrain.goForward(-24);
+  pros::delay(250);
+  driveTrain.goForward(24);
+  pros::delay(250);
+  driveTrain.goForward(-24);
+  pros::delay(250);
+  driveTrain.goForward(24);
+  pros::delay(250);
+  driveTrain.goForward(-24);
+  pros::delay(250);
+  driveTrain.goForward(24);
+  pros::delay(250);
+  driveTrain.goForward(-24);
+  pros::delay(250);
+  driveTrain.goForward(24);
+  pros::delay(250);
+  driveTrain.goForward(-24);
+  pros::delay(250);
+  driveTrain.goForward(24);
+  pros::delay(250);
+  driveTrain.goForward(-24);
+  pros::delay(250);
+  driveTrain.goForward(24);
+  pros::delay(250);
+  driveTrain.goForward(-24);
+  pros::delay(250);
+  driveTrain.goForward(24);
+  pros::delay(250);
+  driveTrain.goForward(-24);
+  pros::delay(250);
+  driveTrain.goForward(24);
+  pros::delay(250);
+  driveTrain.goForward(-24);
+  pros::delay(250);
+  driveTrain.goForward(24);
+  pros::delay(250);
+  driveTrain.goForward(-24);
+  pros::delay(250);
+  driveTrain.goForward(24);
+  pros::delay(250);
+  driveTrain.goForward(-24);
+  pros::delay(250);
+  driveTrain.goForward(24);
+  pros::delay(250);
+  driveTrain.goForward(-24);
+  pros::delay(250);
+  driveTrain.goForward(24);
+  pros::delay(250);
+  driveTrain.goForward(-24);
+  pros::delay(250);
+  driveTrain.goForward(24);
+  pros::delay(250);
+  driveTrain.goForward(-24);
+  pros::delay(250);
+  driveTrain.goForward(24);
+  pros::delay(250);
+  driveTrain.goForward(-24);
+  pros::delay(250);
+  driveTrain.goForward(24);
+  pros::delay(250);
+  driveTrain.goForward(-24);
+  pros::delay(250);
+  driveTrain.goForward(24);
+  pros::delay(250);
+  driveTrain.goForward(-24);
+  pros::delay(250);
+  driveTrain.goForward(24);
+  pros::delay(250);
+  driveTrain.goForward(-24);
+  pros::delay(250);
+  driveTrain.goForward(24);
+  pros::delay(250);
+  driveTrain.goForward(-24);
+  pros::delay(250);
+  driveTrain.goForward(24);
+  pros::delay(250);
+  driveTrain.goForward(-24);
+  pros::delay(250);
+  driveTrain.goForward(24);
+  pros::delay(250);
+  driveTrain.goForward(-24);
+  pros::delay(250);
+  driveTrain.goForward(24);
+  pros::delay(250);
+  driveTrain.goForward(-24);
+  pros::delay(250);
+  driveTrain.goForward(24);
+  pros::delay(250);
+  driveTrain.goForward(-24);
+  pros::delay(250);
+  driveTrain.goForward(24);
+  pros::delay(250);
+  driveTrain.goForward(-24);
+  pros::delay(250);
+  driveTrain.goForward(24);
+  pros::delay(250);
+  driveTrain.goForward(-24);
+  pros::delay(250);
+  driveTrain.goForward(24);
+  pros::delay(250);
+  driveTrain.goForward(-24);
+  pros::delay(250);
+  driveTrain.goForward(24);
+  pros::delay(250);
+  driveTrain.goForward(-24);
+  pros::delay(250);
+  driveTrain.goForward(24);
+  pros::delay(250);
+  driveTrain.goForward(-24);
+  pros::delay(250);
+  driveTrain.goForward(24);
+  pros::delay(250);
+  driveTrain.goForward(-24);
+  pros::delay(250);
+}
+void autonSkills() { 
+  pros::ADIDigitalOut wings (wings_PORT);
+  driveTrain.goForward(-6);
+  outtake();
+  pros::delay(29000);
+ // pros::delay(1000);
+   driveTrain.goForward(-8);
+   stoptake();
+	pros::c::imu_set_heading(IMU_PORT, 135); // 180 for first auton, 225 for second one.  135 for skills
+  pros::delay(250);
+  driveTrain.goForward(5);
+  driveTrain.turn(180);
+  driveTrain.goForward(74);
+  driveTrain.turn(270);
+  driveTrain.turn(315);
+  driveTrain.goForward(-23);
+  driveTrain.turn(270);
+  driveTrain.goForward(-24);
+  driveTrain.goForward(5);
+  driveTrain.turn(180);
+  driveTrain.goForward(20); 
+  pros::c::imu_set_heading(IMU_PORT, 90);
+  pros::delay(100);
+  driveTrain.goForward(-40);
+  driveTrain.turn(180);
+  driveTrain.turn(225);
+  wings.set_value(true);
+  pros::delay(250);
+  driveTrain.goForward(-34);
+  driveTrain.goForward(34);
+  wings.set_value(false);
+  driveTrain.turn(180);
+  driveTrain.goForward(-24);
+  driveTrain.turn(250);
+  wings.set_value(true);
+  pros::delay(250);
+  driveTrain.goForward(-36);
+  driveTrain.goForward(24);
+  wings.set_value(false);
+  driveTrain.turn(200);
+  driveTrain.goForward(-30);
+  driveTrain.turn(270+25);
+    wings.set_value(true);
+  pros::delay(250);
+  driveTrain.goForward(-40);
+  driveTrain.goForward(36); 
 
 }
-void rightSide() {
+void rightSide3Ball() {
+     pros::ADIDigitalOut blocker (wings_PORT);
+     outtake();
+     pros::delay(1000);
+     intake();
+      delay(500);
+      driveTrain.goForward(-30);    
+      driveTrain.turn(135);
+      
+      blocker.set_value(true);
+      pros::delay(250);
+      driveTrain.goForward(-20); //// Drivetrain set to 135 default, switch to 180 when done
+      driveTrain.turn(90);
+      driveTrain.goForward(-18);
+      driveTrain.goForward(18);
+      blocker.set_value(false);
+      pros::delay(250);
+      driveTrain.turn(180);
+      driveTrain.turn(285);
+			outtake();
+      driveTrain.goForward(24); 
+      driveTrain.goForward(-18);
+       stoptake();
+      /*
+      driveTrain.goForward(-12);
+      driveTrain.turn(145);
+      driveTrain.goForward(24);
+      driveTrain.turn(180);
+      driveTrain.goForward(36);*/
+}
+void autonSkillsTurnsOnly(){
+  driveTrain.turn(225);
+   pros::delay(100);
+  driveTrain.turn(180);
+  pros::delay(100);
+  driveTrain.turn(90);
+  pros::delay(100);
+  driveTrain.turn(30);
+  pros::delay(100);
+  driveTrain.turn(135);
+  pros::delay(100);
+  driveTrain.turn(90);
+  pros::delay(100);
+  driveTrain.turn(180);
+  pros::delay(100);
+  driveTrain.turn(90);
+  pros::delay(100);
+  driveTrain.turn(225);
+  pros::delay(100);
+                             
+}
+void leftSideAWP() {//135 lmao 
+ pros::ADIDigitalOut wings (wings_PORT);
+  outtake();
+  driveTrain.goForward(24);
+  stoptake();
+  driveTrain.turn(180);
+  outtake();
+  driveTrain.goForward(8.5);
+  driveTrain.goForward(-8.5);
+  stoptake();
+  wings.set_value(true);
+  pros::delay(250);
+  driveTrain.turn(135);
 
-  //driveTrain.rightSide(0);
+  driveTrain.goForward(-16);
+  driveTrain.turn(90);
+  wings.set_value(false);
+  pros::delay(250);
+driveTrain.turn(135);
+driveTrain.goForward(-6);
+driveTrain.turn(90);
+  driveTrain.goForward(-32);
+  
+
 }
 
 void autonomous() {
-   // 	pros::Controller master(pros::E_CONTROLLER_MASTER);
-
-  	driveTrain.PursuitKill = 0;
-//  Task myTask5(controllerDisplay);
- // driveTrain.tkS = 2000; 
-  driveTrain.tkP = 115; // 115
-  driveTrain.tkI = 0.0045; // 0.005
-  driveTrain.tkD = 0.04;  // 0.04
-
- // driveTrain.fkS = 50; 
-  driveTrain.fkP = 16.5; // 18
-  driveTrain.fkI = 0.015; // 0.02
-  driveTrain.fkD = 0.2; // 0.2
+  driveTrain.motorPortLeft.push_back(leftFrontMotor_PORT);
+  driveTrain.motorPortLeft.push_back(leftMiddleMotor_PORT);
+  driveTrain.motorPortLeft.push_back(leftBackMotor_PORT);
+  driveTrain.motorPortRight.push_back(rightFrontMotor_PORT);
+  driveTrain.motorPortRight.push_back(rightMiddleMotor_PORT);
+  driveTrain.motorPortRight.push_back(rightBackMotor_PORT);
+	pros::Motor leftUtilityMotor (leftUtilityMotor_PORT);
+	pros::Motor rightUtilityMotor (rightUtilityMotor_PORT);
+  pros::ADIDigitalOut blocker (wings_PORT);
   
-  // Random values I put in.
-  driveTrain.lkS = 0;  // 2800
-  driveTrain.lkV = 0;
-  driveTrain.lkP = 13; // 250
-  driveTrain.lkI = 0.000025;
-  driveTrain.lkD = 0.00005;
-  
-  driveTrain.rkS = 0; //2500
-  driveTrain.rkV = driveTrain.lkV;
-  driveTrain.rkP = 13; // 275
-  driveTrain.rkI = driveTrain.lkI;
-  driveTrain.rkD = driveTrain.lkD; 
-  
-  driveTrain.vC = 70; // 1 
-  driveTrain.aC = .75; // .25
-  driveTrain.pC = 0; // .15 
-  driveTrain.lookAheadRadius = 10; // radius rembmer 
 
-	 pros::Motor intakeMotor(intakeMotor_PORT); 
-   pros::ADIDigitalOut flapLeft ({{expander_PORT,EXT_flapLeft_PORT}});
-   pros::ADIDigitalOut flapRight ({{expander_PORT,EXT_flapRight_PORT}});
-  // Task pursuitTask(ppint);
-  // Task PursuitControlTask(PursuitControl);
-  //driveTrain.pursuitPoints.push_back({90,90,200});
-  //driveTrain.pursuitPoints.push_back({96,88,200});
-  //driveTrain.pursuitPoints.push_back({100,76,200});
-  pros::c::imu_reset_blocking(11);
-  pros::c::imu_set_heading(11, 180);
+  driveTrain.wheelSize = 3.25;
+  driveTrain.trackLength = 12.30402153; // change when you actually get the robot  */
+  // driveTrain.tkS = 2000; 
+  driveTrain.tkP = 135; // 135
+  driveTrain.tkI = 0.75; // 0.75
+  driveTrain.tkD = 0;  // 0
 
+  // driveTrain.fkS = 50; 
+  driveTrain.fkP = 15; // 15
+  driveTrain.fkI = 0.025; // 0.025
+  driveTrain.fkD = 0; // 0
+  driveTrain.lookAheadRadius = 10;
+  driveTrain.injectionMultipler = 4;
+
+  //driveTrain.turn(360,360);
+	//pros::Motor intakeMotor(intakeMotor_PORT); 
+	leftUtilityMotor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
+	rightUtilityMotor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
  
+ /* driveTrain.position[2] = 0;
+  driveTrain.pursuitPoints.push_back({10,10,1});
+  driveTrain.pursuitPoints.push_back({12,36,1});
+  driveTrain.pursuitPoints.push_back({40,36,1});
+  driveTrain.heading = 0;
+  driveTrain.purePursuit(); */
+	//pros::c::imu_set_heading(IMU_PORT, 180); // 180 for first auton, 225 for second one.  135 for skills
+  //pros::delay(250)
+  rightSide3Ball();
+ //autonSkillsTurnsOnly();
+ //turnCalibrator();
+ //moveCalibrator();
+ //autonSkills();
+ //leftSideAWP();
+///                                                           Autonomous skills code: 
+  /*
+ 
+  */
 
-//  driveTrain.leftVelocity = 0;
-//  driveTrain.rightVelocity = 0;
+
+
+
+//                                                                          goal side 3 ball
+	/*		leftUtilityMotor.move(-127);
+			rightUtilityMotor.move(127);
+      driveTrain.goForward(4);
+      delay(500);
+      driveTrain.goForward(-34);    
+      driveTrain.turn(135);
+      blocker.set_value(true);
+      pros::delay(250);
+      driveTrain.goForward(-12); //// Drivetrain set to 135 default, switch to 180 when done
+      driveTrain.turn(90);
+      driveTrain.goForward(-18);
+      driveTrain.goForward(18);
+      blocker.set_value(false);
+      pros::delay(250);
+      driveTrain.turn(180);
+      driveTrain.turn(270);
+			leftUtilityMotor.move(127);
+			rightUtilityMotor.move(-127);
+      driveTrain.goForward(18); */
+ 
+// offesnive side Win point 
+   //   intake(); 
+   /*
+      delay(250);
+      driveTrain.goForward(24);
+      driveTrain.turn(180); */
+  //    outtake(); 
+    //  driveTrain.goForward(6); 
+    /*
+   //   stoptake();
+      driveTrain.goForward(-18); 
+      //wings.set_value(true);
+      pros::delay(250);
+      driveTrain.turn(255);
+      driveTrain.goForward(-12);
+      driveTrain.turn(345);
+      driveTrain.turn(90);
+      //wings.set_value(false);
+      pros::delay(250);
+      driveTrain.goForward(20); 
+   //   blocker.set_value(true); 
+*/
 
  //   driveTrain.goForward(-48);
 
@@ -229,124 +622,10 @@ void autonomous() {
   } */
 
 
-//  autonomous1();
+//  autonomous1()
+  
 
-    driveTrain.turn(90);
-  /*  pros::delay(250);
-    driveTrain.turn(180);
-    pros::delay(250);
-    driveTrain.turn(270);
-    pros::delay(250);
-    driveTrain.turn(180);
-    pros::delay(250);
-    driveTrain.turn(90);
-    pros::delay(250);
-    driveTrain.turn(5);
-    pros::delay(250); 
-    driveTrain.turn(90);
-    pros::delay(250);
-    driveTrain.turn(180);
-    pros::delay(250);
-    driveTrain.turn(270);
-    pros::delay(250);
-    driveTrain.turn(180);
-    pros::delay(250);
-    driveTrain.turn(90);
-    pros::delay(250);
-    driveTrain.turn(5);
-    pros::delay(250); 
-    driveTrain.turn(90);
-    pros::delay(250);
-    driveTrain.turn(180);
-    pros::delay(250);
-    driveTrain.turn(270);
-    pros::delay(250);
-    driveTrain.turn(180);
-    pros::delay(250);
-    driveTrain.turn(90);
-    pros::delay(250);
-    driveTrain.turn(5);
-    pros::delay(250); 
-    driveTrain.turn(90);
-    pros::delay(250);
-    driveTrain.turn(180);
-    pros::delay(250);
-    driveTrain.turn(270);
-    pros::delay(250);
-    driveTrain.turn(180);
-    pros::delay(250);
-    driveTrain.turn(90);
-    pros::delay(250);
-    driveTrain.turn(5);
-    pros::delay(250); 
-     driveTrain.turn(90);
-    pros::delay(250);
-    driveTrain.turn(180);
-    pros::delay(250);
-    driveTrain.turn(270);
-    pros::delay(250);
-    driveTrain.turn(180);
-    pros::delay(250);
-    driveTrain.turn(90);
-    pros::delay(250);
-    driveTrain.turn(5);
-    pros::delay(250); 
-    driveTrain.turn(90);
-    pros::delay(250);
-    driveTrain.turn(180);
-    pros::delay(250);
-    driveTrain.turn(270);
-    pros::delay(250);
-    driveTrain.turn(180);
-    pros::delay(250);
-    driveTrain.turn(90);
-    pros::delay(250);
-    driveTrain.turn(5);
-    pros::delay(250); 
-    driveTrain.turn(90);
-    pros::delay(250);
-    driveTrain.turn(180);
-    pros::delay(250);
-    driveTrain.turn(270);
-    pros::delay(250);
-    driveTrain.turn(180);
-    pros::delay(250);
-    driveTrain.turn(90);
-    pros::delay(250);
-    driveTrain.turn(5);
-    pros::delay(250); 
-    driveTrain.turn(90);
-    pros::delay(250);
-    driveTrain.turn(180);
-    pros::delay(250);
-    driveTrain.turn(270);
-    pros::delay(250);
-    driveTrain.turn(180);
-    pros::delay(250);
-    driveTrain.turn(90);
-    pros::delay(250);
-    driveTrain.turn(5);
-    pros::delay(250); */
-/*
-  driveTrain.goForward(24);
-  pros::delay(250);
-  driveTrain.goForward(-12);
-  pros::delay(250);
-  driveTrain.goForward(24);
-  pros::delay(250);
-  driveTrain.goForward(-24);
-  pros::delay(250);
-
-  driveTrain.goForward(24);
-  pros::delay(250);
-  driveTrain.goForward(-12);
-  pros::delay(250);
-  driveTrain.goForward(24);
-  pros::delay(250);
-  driveTrain.goForward(-24);
-  pros::delay(250);
-  */
-
+ 
 
 
   

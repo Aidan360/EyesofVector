@@ -1,3 +1,4 @@
+/*
 #include "bac.hpp"
 #include "pros/imu.h"
 #include "pros/motors.h"
@@ -24,7 +25,7 @@ void BasicChassis::OdometryThread() {
           master.clear();
         double motorLeftAvg = 0;
         double motorRightAvg = 0;
-        double distanceOffset = 0;
+
         double deltaLeft = 0;
         double deltaRight = 0;
         double distLeft = 0;
@@ -35,12 +36,13 @@ void BasicChassis::OdometryThread() {
         double cartToPolarθ = 0;
         double deltaAngle = 0;
         double gearRatio = 0.6;
+        double distanceOffset = 0;
     while (true) { // ONLY INITIALIZE AS THREAD, NEVER FUNCTION
 
-  /*      for (int i = 0; i < std::size(motorPortLeft); ++i) {
+        for (int i = 0; i < std::size(motorPortLeft); ++i) {
             motorLeftAvg = motorLeftAvg + pros::c::motor_get_position(motorPortLeft[i]);
             motorRightAvg = motorRightAvg + pros::c::motor_get_position(motorPortRight[i]);
-        } */
+        } 
         motorLeftAvg = -1* pros::c::motor_get_position(motorPortLeft[1])*gearRatio;
         motorRightAvg = -1* pros::c::motor_get_position(motorPortRight[1])*gearRatio;
         deltaLeft = (motorLeftAvg - lastPosition[2]);
@@ -48,10 +50,10 @@ void BasicChassis::OdometryThread() {
         distLeft = degRad(deltaLeft) * (wheelSize/2);
         distRight = degRad(deltaRight) * (wheelSize/2);  
 
-        heading = heading + ((distLeft - distRight)/trackLength); 
-      //  heading = pros::c::imu_get_heading(11);
+      //  heading = heading + ((distLeft - distRight)/trackLength); 
+        heading = pros::c::imu_get_heading(IMUPort);
         deltaAngle = heading - lastHeading;
-        if(deltaAngle < 0.1) {
+        if(deltaAngle < 0.01) {
             if (distRight == 0) { 
             distanceOffset = distRight;
             }
@@ -71,9 +73,10 @@ void BasicChassis::OdometryThread() {
         orientationAvg = lastHeading + deltaAngle/2;
         cartToPolarR = distanceOffset;  
         cartToPolarθ = 0; 
+        distance = distanceOffset;
         position[0] = cartToPolarR*cos(cartToPolarθ-orientationAvg)+position[0];
         position[1] = cartToPolarR*sin(cartToPolarθ-orientationAvg)+position[1];
-
+        
         
         lastPosition[0] = position[0]; 
         lastPosition[1] = position[1];
@@ -94,3 +97,4 @@ void BasicChassis::OdometryThread() {
     }
 }
 
+*/

@@ -16,5 +16,4 @@ class flyWheel {
 };
 
 extern flyWheel spinnyThing; 
-extern int globalRPM;
-extern int pidControl; // used for calibrating Feed forward by turning off PID to let velocity handle higher speeds. 
+extern float globalRPM; 

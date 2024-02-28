@@ -7,7 +7,7 @@
      int screenMaxY = 272; 
 
 void vectorR::createOffset(int thickness) { 
-    pros::screen::set_pen(COLOR_VECTOR_GREEN);
+   // pros::screen::set_pen(COLOR_VECTOR_GREEN);
     for (int i = 0; i < thickness; ++i) {
             pros::screen::draw_rect(0 + i,0 + i,screenMaxX - i,screenMaxY - i);
     }

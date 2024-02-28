@@ -8,13 +8,12 @@
         public:
         std::vector<int> motorPortLeft;
         std::vector<int> motorPortRight;
-        
-        std::vector<std::array<float,3>> pursuitPoints; // x and y positions with velcoity being the values
-        int segments = std::size(pursuitPoints)-1; 
-        
+        std::vector<std::array<float,3>> pursuitPoints;
+        std::vector<std::array<float,3>> injectionPoints;
+        int lastPursuitIndex;
         float rpm = 360; 
         float wheelSize;
-        float lookAheadRadius;   
+        double velocity;
         float trackLength;
         public: 
         double tkS;
@@ -28,55 +27,31 @@
         double ckP;
         double ckI;
         double ckD;
-        double ckS; 
-        // New PID variables made for Pure pursuit and Independent Chassis Control. The t variables can still be used for other purposes l is for left side r is for right side
-        // there shouldn't be much difference in l and r but if there is the PIDs should correct that. 
-        double lkS; 
-        double lkV; 
-        double lkP; 
-        double lkI; 
-        double lkD; 
-        double rkS;
-        double rkV; 
-        double rkP; 
-        double rkI; 
-        double rkD; 
-        double pC; // passive correction variable
-        double aC; // actice correction variable 
-        double vC; // correctional velocity variable 
-        double distToNextPoint;
-        int lastPointIndex;
-        void leftSide(double velocity);  
-            double leftVelocity;
-        void rightSide(double velocity); 
-            double rightVelocity;
-        void pursuitChassisControler (); // combined left and right side controller with two diffrent values to minimize threads
+        double ckS;
+        void purePursuit();
+        int lastPointIndex = 0;
+        float heading;
+        float position[3]; // x,y,heading
+        void OdometryThread();
         bool fail; // failsafe for calibrator 
         char IMUPort; 
-        char top; // uhhh don't use
-        char bottom; // uhhh don't use
-        double position[2]; // x,y
-        double velocity[3]; // x,y and current 
-        double heading; // radians
-        double distance; // Relative to PID functions but 
-        void goForward(double inch); // currently broken :/
-        void turn(double degree); 
+        char top;
+        char bottom;
+        void goForward(double inch);
+        void turn(double degree);
         void goForwardM(double distance, double velocity);
-        void turnM(double degrees, double velocity);
-        int calibrator(float inputP, float inputI, float inputD, float inputS,bool type); 
-        void OdometryThread();
-        void PurePursuitThread();
-        int PursuitKill;
+        void goForwardO(double distance, double velocity);
+        double distance;
         bool trackingCheck(double x1, double x2, double y1, double y2);
-        int totalPairs; // Total number of point pairs
-        class pointPair { // object of point pairs and the decider for when to switch to the next point in the pure pursuit. 
-            int PairNum;
-            double pointA[2];
-            double pointB[2];
-            double distFromCenter;
-        };
+        float lookAheadRadius;
+        float distToNextPoint;
+        void turnM(double degrees, double velocity);
+        void turnO(double degrees, double velocity);
+
+        int calibrator(float inputP, float inputI, float inputD, float inputS,bool type); 
         double runner(bool type);
-        
+        int injectionMultipler;
+        void curveInterpolation();        
         private: 
         double velVol = 600/rpm;
         double error;
