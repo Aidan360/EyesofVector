@@ -253,6 +253,14 @@ void moveCalibrator() {
   driveTrain.goForward(-24);
   pros::delay(250);
 }
+void offenseiveRightSide6Ball() {
+ pros::c::imu_set_heading(IMU_PORT, 180-30);
+  pros::ADIDigitalOut wings (wings_PORT);
+  driveTrain.goForward(-72);
+  driveTrain.turn(270);
+  driveTrain.goForward(-24);
+  
+}
 void autonSkills() { 
   pros::ADIDigitalOut wings (wings_PORT);
   driveTrain.goForward(-6);

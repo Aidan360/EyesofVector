@@ -2,10 +2,10 @@
 #include "main.h"
  // Smart Ports
 #define leftFrontMotor_PORT 1 // Speed 
-#define leftMiddleMotor_PORT 2 // Speed
-#define leftBackMotor_PORT 3 // Speed
-#define rightFrontMotor_PORT 4 // Speed
-#define rightMiddleMotor_PORT 5 // Speed
+#define leftMiddleMotor_PORT 3 // Speed
+#define leftBackMotor_PORT 5 // Speed
+#define rightFrontMotor_PORT 2 // Speed
+#define rightMiddleMotor_PORT 4 // Speed
 #define rightBackMotor_PORT 6 // Speed
 #define leftUtilityMotor_PORT 7 // Torque
 #define rightUtilityMotor_PORT 12 // Torque 
