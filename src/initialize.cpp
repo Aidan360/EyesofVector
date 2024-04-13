@@ -18,9 +18,13 @@ void odometryTask() {
   driveTrain.motorPortLeft.push_back(leftFrontMotor_PORT);
   driveTrain.motorPortLeft.push_back(leftMiddleMotor_PORT);
   driveTrain.motorPortLeft.push_back(leftBackMotor_PORT);
+  driveTrain.motorPortLeft.push_back(leftUtilityMotor_PORT);
   driveTrain.motorPortRight.push_back(rightFrontMotor_PORT);
   driveTrain.motorPortRight.push_back(rightMiddleMotor_PORT);
-  driveTrain.motorPortRight.push_back(rightBackMotor_PORT); // change when you actually get the robot  */
+  driveTrain.motorPortRight.push_back(rightBackMotor_PORT); 
+  driveTrain.motorPortRight.push_back(rightUtilityMotor_PORT);
+  
+  // change when you actually get the robot  */
   // driveTrain.position[0] = 90;
    //driveTrain.position[1] = 90;
    //driveTrain.heading = 0;
@@ -39,7 +43,7 @@ void initialize() {
     pros::Motor rightMiddleMotor_initializer (rightMiddleMotor_PORT, pros::E_MOTOR_GEARSET_06, true, pros::E_MOTOR_ENCODER_DEGREES); 
     pros::Motor rightBackMotor_initializer (rightBackMotor_PORT, pros::E_MOTOR_GEARSET_06, true, pros::E_MOTOR_ENCODER_DEGREES);
     pros::Motor leftUtilityMotor_initializer (leftUtilityMotor_PORT,pros::E_MOTOR_GEARSET_36,false,pros::E_MOTOR_ENCODER_DEGREES);
-    pros::Motor rightUtilityMotor_initializer (rightUtilityMotor_PORT,pros::E_MOTOR_GEARSET_36,false,pros::E_MOTOR_ENCODER_DEGREES);
+    pros::Motor rightUtilityMotor_initializer (rightUtilityMotor_PORT,pros::E_MOTOR_GEARSET_36,true,pros::E_MOTOR_ENCODER_DEGREES);
    // pros::Motor intake_initializer (intakeMotor_PORT, pros::E_MOTOR_GEARSET_06, false, pros::E_MOTOR_ENCODER_DEGREES);
  //   pros::ADIDigitalOut climbingPTO_initializer (climbingPTO_PORT);
     pros::Imu intertia_initializer (IMU_PORT);

@@ -386,6 +386,34 @@ driveTrain.turn(90);
 
 }
 
+void autistic5ball() { 
+  pros::c::imu_set_heading(IMU_PORT, 150);
+   pros::delay(250);
+    pros::ADIDigitalOut wings (wings_PORT);
+  driveTrain.goForwardM(-42,200);
+  wings.set_value(true);
+  driveTrain.bangBangturn(270, 50);
+  driveTrain.goForwardM(-30,360);
+  wings.set_value(false);
+  driveTrain.goForwardM(6,200);
+  driveTrain.bangBangturn(180,50);
+  driveTrain.goForwardM(48,200);
+  driveTrain.bangBangturn(90,50);
+  driveTrain.goForwardM(32,120);
+  driveTrain.goForwardM(-32,360);
+  driveTrain.bangBangturn(45, 50);
+  wings.set_value(true);
+  driveTrain.goForwardM(-18,200);
+  driveTrain.bangBangturn(180, 80);
+  driveTrain.goForwardM(-16,360);
+  wings.set_value(false);
+  driveTrain.goForwardM(12,360);
+  driveTrain.bangBangturn(5,120);
+  driveTrain.goForwardM(24,360);
+  driveTrain.goForwardM(-12,360);
+
+}
+
 void autonomous() {
   driveTrain.motorPortLeft.push_back(leftFrontMotor_PORT);
   driveTrain.motorPortLeft.push_back(leftMiddleMotor_PORT);

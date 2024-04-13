@@ -145,18 +145,6 @@ void opcontrol() {
 
 
 
-		if (master.get_digital(DIGITAL_R1)) {
-			leftUtilityMotor.move(-127*0.9);
-			rightUtilityMotor.move(127*0.9);
-		}
-		else if (master.get_digital(DIGITAL_R2)) {
-			leftUtilityMotor.move(127);
-			rightUtilityMotor.move(-127);
-		}
-		else {
-			leftUtilityMotor.move(0);
-			rightUtilityMotor.move(0);
-		}
 		/*
 		if (master.get_digital(DIGITAL_B)){
       		if (climbPTO == false) {
@@ -173,9 +161,25 @@ void opcontrol() {
 		leftFrontMotor.move(left); // Conners Move
 		leftMiddleMotor.move(left);
 		leftBackMotor.move(left);
+		leftUtilityMotor.move(left);
 		rightFrontMotor.move(right);
 		rightMiddleMotor.move(right);
 		rightBackMotor.move(right);
+		rightUtilityMotor.move(right);
+
+
+		if (master.get_digital(DIGITAL_R1)) {
+			leftUtilityMotor.move(-127*0.9);
+			rightUtilityMotor.move(127*0.9);
+		}
+		else if (master.get_digital(DIGITAL_R2)) {
+			leftUtilityMotor.move(127);
+			rightUtilityMotor.move(-127);
+		}
+		else {
+			leftUtilityMotor.move(0);
+			rightUtilityMotor.move(0);
+		}
 		pros::delay(100);
 }
 }

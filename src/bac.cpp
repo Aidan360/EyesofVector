@@ -134,6 +134,36 @@ void BasicChassis::goForwardM(double distance, double velocity) { // Horizontal
         pros::c::motor_move_relative(motorPortLeft[i],rotationDegrees,velocity*velVol);
         pros::c::motor_move_relative(motorPortRight[i],rotationDegrees,velocity*velVol);
     } */
+
+void BasicChassis::bangBangturn(double degrees, double velocity) {
+    error = degrees - pros::c::imu_get_heading(IMU_PORT);
+        double count = 0;
+    double counter = 50; 
+    while (abso(error) > 1) { 
+        error = degrees - pros::c::imu_get_heading(IMU_PORT);
+            for (int i = 0; i < std::size(motorPortLeft); ++i) {
+        pros::c::motor_move_velocity(motorPortLeft[i],-velocity);
+        pros::c::motor_move_velocity(motorPortRight[i],velocity);
+    }
+    if (int(pros::c::motor_get_actual_velocity(motorPortLeft[1])) == 0) {
+        count = count + 1;
+    }
+    else {
+        count = 0;
+    }  
+    if (counter < count) {
+        fail = true;
+       break;
+    }  
+    }
+    for (int i = 0; i < std::size(motorPortLeft); ++i) {
+        pros::c::motor_move_velocity(motorPortLeft[i],0);
+        pros::c::motor_move_velocity(motorPortRight[i],0);
+    }
+}
+
+
+
 void BasicChassis::turn(double degree) {
     error = degree - pros::c::imu_get_heading(IMU_PORT);
     int intError = sgn(error);

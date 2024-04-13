@@ -46,6 +46,7 @@
         float lookAheadRadius;
         float distToNextPoint;
         void turnM(double degrees, double velocity);
+        void bangBangturn(double degrees, double velocity); 
         void turnO(double degrees, double velocity);
 
         int calibrator(float inputP, float inputI, float inputD, float inputS,bool type); 
